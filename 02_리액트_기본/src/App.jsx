@@ -1,33 +1,32 @@
-import reactImg from "./assets/react-core-concepts.png";
-import * as Data from "./data";
-const reactDescriptions = ["Fundamental", "Crucial", "Core"];
+import React, { useState } from "react";
 
-function genRandomInt(max) {
-  return Math.floor(Math.random() * (max + 1));
-}
-
-function Header() {
-  const description = reactDescriptions[genRandomInt(2)];
-  return (
-    <header>
-      <img src={reactImg} alt="Stylized atom" />
-      <h1>React Essentials</h1>
-      <p>{description} React concepts you will need for almost any app you are going to build!</p>
-    </header>
-  );
-}
-
-function CoreConcept({ item }) {
-  return (
-    <li>
-      <img src={item.img} alt={item.title} />
-      <h3>{item.title}</h3>
-      <p>{item.description}</p>
-    </li>
-  );
-}
+import Header from "./components/Header/Header";
+import CoreConcept from "./components/CoreConcept";
+import TabButton from "./components/TabButton";
+import { CORE_CONCEPTS, EXAMPLES } from "./data";
 
 function App() {
+  // 몰랐는데 얘네 둘은 배열 구조분해래^^..
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [selectedTab, setSelectedTab] = useState(false);
+
+  let tabContent = <p>Please select a topic</p>;
+  if (selectedTopic) {
+    tabContent = (
+      <div>
+        <h3>{EXAMPLES[selectedTopic].title}</h3>
+        <p>{EXAMPLES[selectedTopic].description}</p>
+        <pre>
+          <code>{EXAMPLES[selectedTopic].code}</code>
+        </pre>
+      </div>
+    );
+  }
+
+  function handleSelect(selectedIndex) {
+    setSelectedTopic(selectedIndex);
+  }
+
   return (
     <div>
       <Header />
@@ -36,14 +35,39 @@ function App() {
         <section id="core-concepts">
           <h2>coreConcept</h2>
           <ul>
-            {/* <CoreConcept {...Data.CORE_CONCEPTS[0]} /> */}
-            <CoreConcept img={Data.CORE_CONCEPTS[0].img} title={Data.CORE_CONCEPTS[0].title} description={Data.CORE_CONCEPTS[0].description} />
-            {/* {Data.CORE_CONCEPTS.map((item) =>
-              <CoreConcept item={item} />
-            )} */}
+            {/*
+            0. 하나씩 나열하기
+             <CoreConcept img={CORE_CONCEPTS[0].img} title={CORE_CONCEPTS[0].title} description={CORE_CONCEPTS[0].description} /> 
+            1. 하나를 풀기
+             <CoreConcept {...CORE_CONCEPTS[0]} /> 
+            2. item 값으로 받아서 뿌리기
+            {CORE_CONCEPTS.map((item, index) => (
+              <CoreConcept key={"core-concepts" + index} item={item} />
+            ))} */}
+            {CORE_CONCEPTS.map((conceptItem, index) => (
+              <CoreConcept key={conceptItem.title} {...conceptItem} />
+            ))}
           </ul>
         </section>
-        <h2>Time to get started!</h2>
+
+        <section id="examples">
+          <h2>Examples</h2>
+          <menu>
+            <TabButton isSelected={selectedTopic === "components"} onSelect={() => handleSelect("components")}>
+              Components
+            </TabButton>
+            <TabButton isSelected={selectedTopic === "jsx"} onSelect={() => handleSelect("jsx")}>
+              JSX
+            </TabButton>
+            <TabButton isSelected={selectedTopic === "props"} onSelect={() => handleSelect("props")}>
+              Props
+            </TabButton>
+            <TabButton isSelected={selectedTopic === "state"} onSelect={() => handleSelect("state")}>
+              State
+            </TabButton>
+          </menu>
+          <div id="tab-content">{tabContent}</div>
+        </section>
       </main>
     </div>
   );
