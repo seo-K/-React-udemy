@@ -10,7 +10,6 @@ function App() {
   const [selectedTopic, setSelectedTopic] = useState("");
 
   let tabContent = <p>Please select a topic</p>;
-
   if (selectedTopic) {
     tabContent = (
       <div>
@@ -44,7 +43,7 @@ function App() {
             {CORE_CONCEPTS.map((item, index) => (
               <CoreConcept key={"core-concepts" + index} item={item} />
             ))} */}
-            {CORE_CONCEPTS.map((conceptItem, index) => (
+            {CORE_CONCEPTS.map((conceptItem) => (
               <CoreConcept key={conceptItem.title} {...conceptItem} />
             ))}
           </ul>

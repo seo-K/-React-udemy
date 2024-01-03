@@ -27,3 +27,77 @@ document.body.appendChild(element);
 const greeting = "Hello, World!";
 const element = <div>{greeting}</div>;
 ```
+
+2. map
+
+- 이런식으로 뿌릴 수도 있음.
+
+```js
+{
+  dataList.map((item, index) => <CoreConcept key={item.title} item={item} />);
+}
+{
+  dataList.map((item) => <CoreConcept key={item.title} {...conceptItem} />);
+}
+```
+
+3. props 가져오는 법.
+
+   - props나 props.children, children 으로 가져오기
+   - attribute 값 사용
+
+   ```js
+       // 1.
+       <TabButton label="버튼내용 넣기"></TabButton>
+
+       export default function TabButton({ label }) {
+       function handleClick() {
+           console.log("눌림");
+       }
+       return (
+           <li>
+           <button type="button" onClick={handleClick}>
+               {label}
+           </button>
+           </li>
+       );
+
+       // 2.
+       <TabButton>버튼내용 넣기</TabButton>
+       export default function TabButton({ children, onSelect, isSelected }) {
+           return (
+               <li>
+               <button className={isSelected ? "active" : undefined} type="button" onClick={onSelect}>
+                   {children}
+               </button>
+               </li>
+           );
+       }
+   ```
+
+4. 컴포넌트화 시키는 이유.
+
+- 변경된 state가 있는 컴포넌트만 재랜더링 하려구.
+
+ex) 1번째는 변경이 되면 전체 header, menu, p 태그가 다 다시 랜더링되고, 2번째는 변경되는곳 컴포넌트만 리랜더링된다.
+
+```js
+<body>
+  <header></header>
+  <main>
+    <menu></menu>
+    <p></p>
+    <div>변경되는곳</div>
+  </main>
+</body>
+```
+
+```js
+<body>
+  <header></header>
+  <main>
+    <Menu />
+    <변경되는곳 />
+  </main>
+</body>
+```
