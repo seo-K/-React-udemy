@@ -8,9 +8,9 @@ import { CORE_CONCEPTS, EXAMPLES } from "./data";
 function App() {
   // 몰랐는데 얘네 둘은 배열 구조분해래^^..
   const [selectedTopic, setSelectedTopic] = useState("");
-  const [selectedTab, setSelectedTab] = useState(false);
 
   let tabContent = <p>Please select a topic</p>;
+
   if (selectedTopic) {
     tabContent = (
       <div>
