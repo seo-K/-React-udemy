@@ -1,53 +1,32 @@
 import React, { useState } from "react";
 
-export default function Player({ Edit, name, symbol }) {
+export default function Player({ initialName, symbol , isActive}) {
+  const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
-  // const [playerName, setPlayerName] = useState({ name });
 
-  let playerName = <span className="player-name">{name}</span>;
+  const handleEditClick = () => {
+    setIsEditing((editing) => !editing);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setPlayerName(e.target.value);
+  };
+
+  let editablePlayerName = <span className="player-name">{playerName}</span>;
   if (isEditing) {
-    playerName = (
-      <input
-        type="text"
-        placeholder="사용자명을 입력해주세요"
-        value={playerName}
-        onChange={(e) => {
-          e.preventDefault();
-          // setPlayerName(e.target.value);
-        }}
-        required
-      />
-    );
+    editablePlayerName = <input type="text" placeholder="사용자명을 입력해주세요" value={playerName} onChange={handleChange} required />;
   }
   return (
-    <li>
+    <li className={isActive ? "active" : undefined}>
       <span className="player">
-        {playerName}
+        {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
       </span>
 
-      <button type="button" onClick={() => setIsEditing(!isEditing)}>
+      <button type="button" onClick={handleEditClick}>
         {isEditing ? "Save" : "Edit"}
       </button>
     </li>
-    //   <li className="player">
-    //     {isEditing ? (
-    //       <form>
-    //  {playerNames}}
-    //         <span className="player-symbol">{symbol}</span>
-    //         <button type="button" onClick={() => setIsEditing(false)}>
-    //           Save
-    //         </button>
-    //       </form>
-    //     ) : (
-    //       <React.Fragment>
-    //         <span className="player-names">{playerName || name}</span>
-    //         <span className="player-symbol">{symbol}</span>
-    //         <button type="button" onClick={() => setIsEditing(true)}>
-    //           Edit
-    //         </button>
-    //       </React.Fragment>
-    //     )}
-    //   </li>
   );
 }
