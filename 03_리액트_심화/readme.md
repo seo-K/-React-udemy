@@ -10,4 +10,22 @@
 
 2. props 와 함수를 가져오고 내보낼 수 있음.
 
+```js
+// ...props 를 사용하여 통으로 받아올 수 있음.
+export default function TabButton({children, isSelected, ...props}) {
+  console.log("TABBUTTON COMPONENT EXECUTING");
+  return (
+    <li>
+      <button className={isSelected ? "active" : undefined} {...props}>
+        {children}
+      </button>
+    </li>
+  );
+}
+
+<TabButton isSelected={selectedTopic === "components"} onClick={() => handleSelect("components")}>
+  Components
+</TabButton>;
+```
+
 3. React 는 상태를 최대한 적게 사용하도록 하고, 최대한 많은 값을 파생 및 연사하도록 하는 것.
