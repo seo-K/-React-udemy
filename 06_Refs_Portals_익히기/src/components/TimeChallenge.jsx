@@ -1,50 +1,54 @@
-import React, { useState,useRef } from "react";
-
+import React, { useState, useRef } from "react";
+import ResultModal from "./ResultModal";
 
 export default function TimeChallenge({ title, targetTime }) {
-  const timer = useRef()
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
+  // 참조 = 특정 컴포넌트 인스턴스에만 할당됨
+  const timer = useRef();
+  const dialog = useRef();
+
+  const [timeRenaming, setTimeRenaming] = useState(targetTime * 1000);
+  const timerIsActive = timeRenaming > 0 && timeRenaming < targetTime * 1000;
+
+  if (timeRenaming <= 0) {
+    clearInterval(timer.current);
+    // setTimeRenaming(targetTime * 1000);
+    dialog.current.open(); // dialog 자체에 있는 showModal() 메서드를 호출
+  }
+
+  function handleReset() {
+    setTimeRenaming(targetTime * 1000);
+  }
 
   const handleStart = () => {
-    // let 으로 선언시 다른 TimeChallenge 컴포넌트에서도 공통으로 사용되어
-    // 5초 타이머를 실행하고, 1초 타이머를 실행하면 5초 타이머의 값이 1초 타이머에 적용되어(값 공유) 바로 실패처리가되는 이슈가 있음.
-    // let timer;
-    timer.current = setTimeout(() => {
-      setTimerExpired(true);
-      // setTimerStarted(false);
-    }, targetTime * 1000);
-    setTimerStarted(true);
+    // 10ms 마다 10ms씩 감소
+    timer.current = setInterval(() => {
+      setTimeRenaming((prevTimeRenaming) => prevTimeRenaming - 10);
+    }, 10);
   };
 
+  console.log(timeRenaming);
+  // console.log(timerIsActive);
   const handleStop = () => {
-    // setTimerExpired(false);
-    // setTimerStarted(false);
-    clearTimeout(timer.current);
+    dialog.current.open();
+    clearInterval(timer.current);
   };
 
-  // 1. 시작
-  // 2. 중지
-  // 3. 타임오버로 재시작 = reset
-  // const handleReset = () => {
-  //   timerStarted(true)
-  //   setTimerExpired(false)
-  //   clearTimeout(timer)
-  // }
   return (
-    <section className="challenge">
-      <h2>{title}</h2>
-      {timerExpired && <p>실패!!!!!!!!!!!!</p>}
-      <div className="challenge-time">
-        {targetTime} second {targetTime > 1}
-      </div>
-      <p>
-        <button type="button" onClick={timerStarted ? handleStop : handleStart}>
-          {timerStarted ? "재시작" : "시작"}
-        </button>
-        {/* <button type="button">{gameStarted ? "Start" : "Restart"}</button> */}
-      </p>
-      <p className={timerStarted ? "active" : undefined}>{timerStarted ? "타이머가 실행중" : "타이머가 멈춤"}</p>
-    </section>
+    <>
+      <ResultModal result="짐" targetTime={targetTime} ref={dialog} remainingTime={timeRenaming} onReset={handleReset} />
+      <section className="challenge">
+        <h2>{title}</h2>
+        {/* {timerExpired && <p>실패!!!!!!!!!!!!</p>} */}
+        <div className="challenge-time">
+          {targetTime} second {targetTime > 1}
+        </div>
+        <p>
+          <button type="button" onClick={timerIsActive ? handleStop : handleStart}>
+            {timerIsActive ? "재시작" : "시작"}
+          </button>
+        </p>
+        <p className={timerIsActive ? "active" : undefined}>{timerIsActive ? "타이머가 실행중" : "타이머가 멈춤"}</p>
+      </section>
+    </>
   );
 }
