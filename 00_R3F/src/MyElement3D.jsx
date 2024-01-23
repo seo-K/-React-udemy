@@ -1,36 +1,51 @@
-import {OrbitControls} from "@react-three/drei";
-import {useEffect, useRef} from "react";
+import "./App.css";
+import { Canvas } from "@react-three/fiber";
+import MyElement3D from "./MyElement3D";
+import { useState } from "react";
 
-function MyElement3D() {
-  // Drei : R3F에서 사용할 수 있는 유용한 컴포넌트들을 모아놓은 라이브러리 입니다.
-  // npm i @react-three/drei
+const 재질 = [
+  "MeshBasicMaterial",
+  "MeshLambertMaterial",
+  "MeshPhongMaterial",
+  "MeshStandardMaterial",
+  "MeshPhysicalMaterial",
+  "MeshDepthMaterial",
+  "MeshNormalMaterial",
+  "MeshToonMaterial",
+];
 
-  const refMesh = useRef();
-  const refWireMesh = useRef();
+// const [activeTab, setActiveTab] = useRef(0);
+const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
-    refWireMesh.current.geometry = refMesh.current.geometry;
-    console.log(refWireMesh.current.geometry);
-  }, []);
+// const tabHandler = (index) => {
+//   setActiveTab(index);
+// };
 
+function App() {
   return (
     <>
-      <OrbitControls />
+      <nav className="tab">
+        {재질.map((item, index) => {
+          return (
+            <button type="button" key={index} onClick={(e) => console.log(index)}>
+              {item}
+            </button>
+          );
+        })}
+      </nav>
 
-      <ambientLight intensity={0.1} />
-      <directionalLight position={[2, 2, 3]} intensity={0.5} />
-
-      <mesh ref={refMesh}>
-        <boxGeometry />
-        <meshStandardMaterial color="#1abc9c" />
-      </mesh>
-
-      <mesh ref={refWireMesh}>
-        {/* <boxGeometry /> */}
-        <meshStandardMaterial emissive="yellow" wireframe={true} />
-      </mesh>
+      <Canvas>
+        <MyElement3D />
+      </Canvas>
+      <Canvas>
+        <pointLight position={[10, 10, 10]} />
+        <mesh>
+          <sphereGeometry />
+          <meshStandardMaterial color="hotpink" />
+        </mesh>
+      </Canvas>
     </>
   );
 }
 
-export default MyElement3D;
+export default App;
