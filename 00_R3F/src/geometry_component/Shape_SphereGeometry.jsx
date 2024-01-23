@@ -2,13 +2,7 @@ import {OrbitControls} from "@react-three/drei";
 import {useEffect, useRef} from "react";
 import {useControls} from "leva";
 
-function MyElement3D() {
-  // Drei : R3F에서 사용할 수 있는 유용한 컴포넌트들을 모아놓은 라이브러리 입니다.
-  // npm i @react-three/drei
-
-  // leba :
-  // npm i leva
-
+function Shape_SphereGeometry() {
   const refMesh = useRef();
   const refWireMesh = useRef();
 
@@ -58,4 +52,4 @@ function MyElement3D() {
   );
 }
 
-export default MyElement3D;
+export default Shape_SphereGeometry;

@@ -31,7 +31,7 @@ function MyElement3D() {
         2. color="#ff0000"
         3. color={0xff0000}
         */}
-        {/*  1. 면 (광원의 영향을 받지 않음) */}
+        {/* 1. 면 (광원의 영향을 받지 않음) */}
         {/* <meshBasicMaterial/> */}
         {/* 2. 면 (광원의 영향을 받음) */}
         {/* <meshLambertMaterial

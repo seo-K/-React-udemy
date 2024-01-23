@@ -1,33 +1,59 @@
 import "./App.css";
-import { Canvas } from "@react-three/fiber";
+import {Canvas} from "@react-three/fiber";
 import MyElement3D from "./MyElement3D";
-import { useState } from "react";
-
-const 재질 = [
-  "MeshBasicMaterial",
-  "MeshLambertMaterial",
-  "MeshPhongMaterial",
-  "MeshStandardMaterial",
-  "MeshPhysicalMaterial",
-  "MeshDepthMaterial",
-  "MeshNormalMaterial",
-  "MeshToonMaterial",
-];
-
-// const [activeTab, setActiveTab] = useRef(0);
-const [activeTab, setActiveTab] = useState(0);
-
-// const tabHandler = (index) => {
-//   setActiveTab(index);
-// };
+import GeometryContent from "./GeometryContent.jsx";
+import {useState} from "react";
 
 function App() {
+  const GeometryList = [
+    "BoxGeometry",
+    "CircleGeometry",
+    "ConeGeometry",
+    "CylinderGeometry",
+    "SphereGeometry",
+    "RingGeometry",
+    "PlaneGeometry",
+    "TorusGeometry",
+    "TorusKnotGeometry",
+    "TetrahedronGeometry",
+    "PolyhedronGeometry",
+    "IcosahedronGeometry",
+    "OctahedronGeometry",
+    "DodecahedronGeometry",
+    "ExtrudeGeometry",
+    "LatheGeometry",
+    "CapsuleGeometry",
+    "ShapeGeometry",
+  ];
+  const MeshList = [
+    "MeshBasicMaterial",
+    "MeshLambertMaterial",
+    "MeshPhongMaterial",
+    "MeshStandardMaterial",
+    "MeshPhysicalMaterial",
+    "MeshDepthMaterial",
+    "MeshNormalMaterial",
+    "MeshToonMaterial",
+  ];
+
+  const [activeGeometryTab, setActiveGeometryTab] = useState(GeometryList[0]);
+  const [activeMeshTab, setActiveMeshTab] = useState(MeshList[0]);
+
   return (
     <>
       <nav className="tab">
-        {재질.map((item, index) => {
+        {GeometryList.map((item) => {
           return (
-            <button type="button" key={index} onClick={(e) => console.log(index)}>
+            <button type="button" key={item} onClick={() => setActiveGeometryTab(item)} className={activeGeometryTab === item ? "active" : undefined}>
+              {item}
+            </button>
+          );
+        })}
+      </nav>
+      <nav className="tab">
+        {MeshList.map((item) => {
+          return (
+            <button type="button" key={item} onClick={() => setActiveMeshTab(item)} className={activeMeshTab === item ? "active" : undefined} value={item}>
               {item}
             </button>
           );
@@ -35,6 +61,10 @@ function App() {
       </nav>
 
       <Canvas>
+        <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
+      </Canvas>
+
+      {/* <Canvas>
         <MyElement3D />
       </Canvas>
       <Canvas>
@@ -43,7 +73,7 @@ function App() {
           <sphereGeometry />
           <meshStandardMaterial color="hotpink" />
         </mesh>
-      </Canvas>
+      </Canvas> */}
     </>
   );
 }

@@ -79,7 +79,7 @@
 - rotation (x, y, z 의 회전값) 기본값 0
 - scale (x, y, z 의 scale) 기본값 1
 
-# secen graph
+# scene graph
 
 ![alt text](./image/three5.png)
 
@@ -133,3 +133,38 @@
 
 - 물리기반 렌더링 (PBR = Physically Based Rendering)
 -
+
+### R3F
+
+R3F
+
+웹표준 기술 이용 (WebGL/WebGPU)
+파이프라인
+수학
+Shader(GLSL, WGSL)
+
+Three.js
+WebGL, WebGPU를 랩핑하는 라이브러리
+
+R3F
+React에서 three.js를 효과적으로 사용할 수 있도록 해주는 라이브러리
+
+React 프로젝트 셋팅
+
+1. npm create vite@latest . -> y
+2. package 명 입력
+3. React
+4. Javascript
+5. npm i
+6. npm run dev
+
+R3f 셋팅 방법
+
+1.  npm i @types/three @react-three/fiber
+
+라이브러리
+Drei : R3F에서 사용할 수 있는 유용한 컴포넌트들을 모아놓은 라이브러리 입니다. ex) OrbitControls [3D 카메라 컨트롤]
+npm i @react-three/drei
+
+Leva : R3F에서 사용할 수 있는 장면과 상호 작용할 수 있는 조절툴. ex) useControls
+npm i leva

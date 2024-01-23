@@ -1,8 +1,8 @@
-import { OrbitControls } from "@react-three/drei";
-import { useEffect, useRef } from "react";
-import { useControls } from "leva";
+import {OrbitControls} from "@react-three/drei";
+import {useEffect, useRef} from "react";
+import {useControls} from "leva";
 
-function MyElement3D() {
+function Shape_Box() {
   // Drei : R3F에서 사용할 수 있는 유용한 컴포넌트들을 모아놓은 라이브러리 입니다. ex) OrbitControls [3D 카메라 컨트롤]
   // npm i @react-three/drei
 
@@ -12,14 +12,14 @@ function MyElement3D() {
   const refMesh = useRef();
   const refWireMesh = useRef();
 
-  const { xSize, ySize, zSize, xSegments, ySegments, zSegments } = useControls({
+  const {xSize, ySize, zSize, xSegments, ySegments, zSegments} = useControls({
     // xSize : {value : 초기값, min : 최소값, max : 최대값, step :조정단위, label : 'xSize' }
-    xSize: { value: 1, min: 0.1, max: 5, step: 0.01, label: "xSize" },
-    ySize: { value: 1, min: 0.1, max: 5, step: 0.01, label: "ySize" },
-    zSize: { value: 1, min: 0.1, max: 5, step: 0.01, label: "zSize" },
-    xSegments: { value: 1, min: 1, max: 10, step: 1, label: "xSegments" },
-    ySegments: { value: 1, min: 1, max: 10, step: 1, label: "ySegments" },
-    zSegments: { value: 1, min: 1, max: 10, step: 1, label: "zSegments" },
+    xSize: {value: 1, min: 0.1, max: 5, step: 0.01, label: "xSize"},
+    ySize: {value: 1, min: 0.1, max: 5, step: 0.01, label: "ySize"},
+    zSize: {value: 1, min: 0.1, max: 5, step: 0.01, label: "zSize"},
+    xSegments: {value: 1, min: 1, max: 10, step: 1, label: "xSegments"},
+    ySegments: {value: 1, min: 1, max: 10, step: 1, label: "ySegments"},
+    zSegments: {value: 1, min: 1, max: 10, step: 1, label: "zSegments"},
   });
 
   useEffect(() => {
@@ -49,5 +49,4 @@ function MyElement3D() {
     </>
   );
 }
-
-export default MyElement3D;
+export default Shape_Box;

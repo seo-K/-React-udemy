@@ -43,7 +43,7 @@ function MyElement3D() {
           wireframe={false}
           clearcoat={clearcoat} // 표면에 코팅이 전혀 안되어 있는 재질 0
           clearcoatRoughness={clearcoatRoughness} // 코팅에 대한 거칠기 값. = 매트느낌 0
-          thicknewss={0} // 돌처ㅓㄹㅁ 금ㄱ소
+          thicknewss={0} // 돌처럼 금속
           ior={1.5}
         />
       </mesh>
