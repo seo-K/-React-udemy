@@ -1,17 +1,17 @@
-import {OrbitControls} from "@react-three/drei";
-import {useEffect, useState, useRef} from "react";
-import {useControls} from "leva";
+import { OrbitControls } from "@react-three/drei";
+import { useEffect, useState, useRef } from "react";
+import { useControls } from "leva";
 import * as THREE from "three";
 
 function MyElement3D() {
   const 박스_재질 = useRef();
   const 도넛_재질 = useRef();
 
-  const {roughness, metalness, clearcoat, clearcoatRoughness} = useControls({
-    roughness: {value: 0, min: 0, max: 1, step: 0.01, label: "윤기"},
-    metalness: {value: 0, min: 0, max: 1, step: 0.01, label: "금속성"},
-    clearcoat: {value: 0, min: 0, max: 1, step: 0.01, label: "코팅"},
-    clearcoatRoughness: {value: 0, min: 0, max: 1, step: 0.01, label: "코팅에 대한 거칠기"},
+  const { roughness, metalness, clearcoat, clearcoatRoughness } = useControls({
+    roughness: { value: 0, min: 0, max: 1, step: 0.01, label: "윤기" },
+    metalness: { value: 0, min: 0, max: 1, step: 0.01, label: "금속성" },
+    clearcoat: { value: 0, min: 0, max: 1, step: 0.01, label: "코팅" },
+    clearcoatRoughness: { value: 0, min: 0, max: 1, step: 0.01, label: "코팅에 대한 거칠기" },
   });
 
   useEffect(() => {
