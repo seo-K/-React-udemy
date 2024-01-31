@@ -1,14 +1,12 @@
 import * as THREE from "three";
-import { useControls } from "leva";
-import { useTexture } from "@react-three/drei";
 
 function MatrNormal() {
-  const mapcap = useTexture("https://raw.githubusercontent.com/nidorx/matcaps/master/1024/593E2C_E5D8A9_BC9F79_9F8A68.png");
-
   return (
+    // Normal은 메쉬 표현에 대한 법선 벡터
+    // 법선 벡터의 xyz값을 rgb값으로 표현한 재질
+    // 법선 벡터 관련 https://gusdnd852.tistory.com/280
     <>
-      {/* 4. 고품질이지만. 속도면에서는 이 전 두개보다 조금 느림. (MeshLambertMaterial, MeshPhongMaterial) */}
-      <meshNormalMaterial mapcap={mapcap} />
+      <meshNormalMaterial />
     </>
   );
 }

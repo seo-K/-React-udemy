@@ -25,7 +25,7 @@
 - SphereGeometry (구형)
   - ex) SphereGeometry(1, 32, 16, 0, Math.PI X 2, 0, PI) [반지름, 수평방향 분할 수, 수직방향 분할 수 , 수평방향 시작각, 수평방향 연장각, 수직방향 시작각, 수직방향 연장각]
 - RingGeometry (링모형)
-  - ex) RingGeometry(0.5, 1, 8, 1, 0, Math.PI X 2); // [내부반지름 , 내부반지름, 가장자리 둘레방향 분할개수, 링내부방향 분할개수, 시작각, 연장각]
+  - ex) RingGeometry(0.5, 1, 8, 1, 0, Math.PI X 2); // [내부반지름 , 외부반지름, 가장자리 둘레방향 분할개수, 링내부방향 분할개수, 시작각, 연장각]
 - PlaneGeometry (사각형) (gis 지리정보시스템 3차원지형 표현시 유용)
   - ex) PlaneGeometry(1, 1, 1, 1); //[ 너비, 높이, 너비방향 분할수, 높이방향 분할 수]
 - TorusGeometry (반지모형) (2차원 원이 360도 돌아가있다고 생각하면됨)
@@ -126,7 +126,8 @@
 - MeshStandardMaterial
   - MeshPhysicalMaterial
 - MeshDepthMaterial
-- MeshNormalMaterial
+- MeshMatcapMaterial = matcap 이미지 파일을 그대로 입히는 재질. (이미지 파일은 이미 조을 포함하여, 광원이 필요없음)
+- MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘)
 - MeshToonMaterial
 
 ![alt text](./image/three7.png)

@@ -5,14 +5,18 @@ import React from "react";
 // geometry
 import GeomBox from "./geometry/GeomBox";
 import GeomCylinder from "./geometry/GeomCylinder";
+import GeomRing from "./geometry/GeomRing";
 import GeomSphere from "./geometry/GeomSphere";
+import GeoTours from "./geometry/GeoTours";
 import MatrBasic from "./mesh/MatrBasic";
 import MatrLambert from "./mesh/MatrLambert";
 import MatrPhong from "./mesh/MatrPhong";
 import MatrStandard from "./mesh/MatrStandard";
 import MatrPhysical from "./mesh/MatrPhysical";
 import MatrDepth from "./mesh/MatrDepth";
+import Matcap from "./mesh/Matcap";
 import MatrNormal from "./mesh/MatrNormal";
+import MatrToon from "./mesh/MatrToon";
 
 function MyBox(props) {
   const geom = new THREE.BoxGeometry();
@@ -41,8 +45,12 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
       component: <GeomSphere />,
     },
     {
-      geometry: "sphereGeometry",
-      component: <GeomSphere />,
+      geometry: "ringGeometry",
+      component: <GeomRing />,
+    },
+    {
+      geometry: "torusGeometry",
+      component: <GeoTours />,
     },
   ];
 
@@ -74,13 +82,17 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
       component: <MatrDepth meshColor={meshColor} />,
     },
     {
+      mesh: "meshMatcapMaterial",
+      component: <Matcap />,
+    },
+    {
       mesh: "meshNormalMaterial",
       component: <MatrNormal />,
     },
-    // {
-    //   mesh: "meshToonMaterial",
-    //   component: <MatrToon/>,
-    // },
+    {
+      mesh: "meshToonMaterial",
+      component: <MatrToon />,
+    },
   ];
 
   const Geometry = lowerCaseFirstText(selectedGeometry);
@@ -101,21 +113,20 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
       <OrbitControls />
 
       {/* 카메라와 광원 */}
-      <ambientLight intensity={0.2} />
-      {/* <directionalLight position={[2, 2, 3]} intensity={0.5} /> */}
+      {/* <ambientLight intensity={0.2} />
       <directionalLight position={[2, 2, 3]} />
-      <directionalLight position={[1, 2, 8]} intensity={0.5} />
+      <directionalLight position={[1, 2, 8]} intensity={0.5} /> */}
 
       {/* 3D 객체 렌더링 방식 */}
       {/* <mesh position={[-2, 0, 0]}>
         <boxGeometry />
         <meshStandardMaterial color={meshColor} />
       </mesh> */}
+      {/* {GeometryComponents.map((item, index) => (Geometry === item.geometry ? item.component : <Geometry key={item.geometry + "_geom_content" + index} />))}
+        {MeshComponents.map((item, index) => (Mesh === item.mesh ? item.component : <Mesh key={item.mesh + "_mesh_content" + index} color={meshColor} />))} */}
 
       {/* 1. 기본 */}
       <mesh position={[-2, 0, 0]}>
-        {/* {GeometryComponents.map((item, index) => (Geometry === item.geometry ? item.component : <Geometry key={item.geometry + "_geom_content" + index} />))}
-        {MeshComponents.map((item, index) => (Mesh === item.mesh ? item.component : <Mesh key={item.mesh + "_mesh_content" + index} color={meshColor} />))} */}
         {GeometryComponents.map((item, index) =>
           Geometry === item.geometry ? React.cloneElement(item.component, { key: item.geometry + "_geom_content" }) : null
         )}
