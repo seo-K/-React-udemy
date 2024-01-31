@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-function MatrLambert({meshColor}) {
+function MatrLambert({ meshColor }) {
   return (
     <>
       {/* ## 재질 */}

@@ -8,8 +8,7 @@ function MatrDepth({ meshColor }) {
   // });
   return (
     <>
-      {/*  */}
-      <meshDepthMaterial />
+      <meshDepthMaterial color={meshColor} />
     </>
   );
 }

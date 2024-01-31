@@ -32,6 +32,7 @@ function App() {
     "MeshStandardMaterial",
     "MeshPhysicalMaterial",
     "MeshDepthMaterial",
+    "MeshMatcapMaterial",
     "MeshNormalMaterial",
     "MeshToonMaterial",
   ];
@@ -68,10 +69,15 @@ function App() {
       </nav>
 
       {/* 카메라로부터 거리가 3.5인 픽셀은 그 값을 0으로 할당하고, 카메라로부터 거리가 6인치점은 2를 할당받아서 만들어진 재질 */}
-      <Canvas camera={{ near: 3.5, far: 6 }}>
-        {/* <Canvas camera={toString(activeMeshTab) === "MeshDepthMaterial" ? { near: 3.5, far: 6 } : {}}> */}
-        <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
-      </Canvas>
+      {activeMeshTab == "MeshDepthMaterial" ? (
+        <Canvas camera={{ near: 3.5, far: 6 }}>
+          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
+        </Canvas>
+      ) : (
+        <Canvas>
+          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
+        </Canvas>
+      )}
 
       {/* <Canvas>
         <MyElement3D />

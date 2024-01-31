@@ -14,7 +14,7 @@ import MatrPhong from "./mesh/MatrPhong";
 import MatrStandard from "./mesh/MatrStandard";
 import MatrPhysical from "./mesh/MatrPhysical";
 import MatrDepth from "./mesh/MatrDepth";
-import Matcap from "./mesh/Matcap";
+import MatrMatcap from "./mesh/MatrMatcap";
 import MatrNormal from "./mesh/MatrNormal";
 import MatrToon from "./mesh/MatrToon";
 
@@ -83,7 +83,7 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
     },
     {
       mesh: "meshMatcapMaterial",
-      component: <Matcap />,
+      component: <MatrMatcap />,
     },
     {
       mesh: "meshNormalMaterial",
@@ -113,9 +113,9 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
       <OrbitControls />
 
       {/* 카메라와 광원 */}
-      {/* <ambientLight intensity={0.2} />
+      <ambientLight intensity={0.2} />
       <directionalLight position={[2, 2, 3]} />
-      <directionalLight position={[1, 2, 8]} intensity={0.5} /> */}
+      <directionalLight position={[1, 2, 8]} intensity={0.5} />
 
       {/* 3D 객체 렌더링 방식 */}
       {/* <mesh position={[-2, 0, 0]}>

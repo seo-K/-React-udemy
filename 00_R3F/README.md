@@ -116,20 +116,22 @@
 
 3. Mesh 재질(면 재질)
 
-- MeshBasicMaterial = 광원의 영향을 받지 않는면
+- MeshBasicMaterial = 평면. 광원의 영향을 받지 않는면 | 반사광, 하이라이트가 없는 재질
 - MeshLambertMaterial = 광원의 영향을 받는 면 (기본적인 듯)
 - MeshPhongMaterial = 빛나는 글로우 면 (픽셀단위로 광원의 영향을 계산하는 재질 LamerMaterial 보다 정교한 쉐이딩 효과를 얻을 수 있음.)
+  , 반사 하이라이트가 있는 광택있는 표면 재질
 
 ## 3차원 그래픽에서 가장 많이 사용되는 재질
 
 - 고품질이지만. 속도면에서는 이 전 두개보다 조금 느림.
 - MeshStandardMaterial
-  - MeshPhysicalMaterial
-- MeshDepthMaterial
+  - MeshPhysicalMaterial = 반사성을 더 조절할 수 있는 MeshStandardMaterial의 확장 ( 유리같은 표현 가능 )
+- MeshDepthMaterial = 음영으로 깊이를 표현 재질
 - MeshMatcapMaterial = matcap 이미지 파일을 그대로 입히는 재질. (이미지 파일은 이미 조을 포함하여, 광원이 필요없음)
-- MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘)
+- MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘) 백터를 RGB 색상으로 매핑하는 재질
 - MeshToonMaterial
 
+![alt text](https://velog.velcdn.com/images/blcklamb/post/62a4e78c-fc84-46cd-9d02-f9a053c898dd/image.png)
 ![alt text](./image/three7.png)
 
 - 물리기반 렌더링 (PBR = Physically Based Rendering)

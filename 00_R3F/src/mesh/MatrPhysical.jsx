@@ -25,7 +25,8 @@ function MatrPhysical({ meshColor }) {
         // side={THREE.FrontSide}
         side={THREE.DoubleSide}
         color={meshColor}
-        emissive={0x000000}
+        emissive="blue"
+        // emissive={0x000000}
         roughness={roughness} // 윤기
         metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
         // MatrStandard 와 다르게 이게 들어감

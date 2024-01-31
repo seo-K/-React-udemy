@@ -17,7 +17,8 @@ function MatrStandard({ meshColor }) {
         depthWrite={true}
         side={THREE.FrontSide}
         color={meshColor}
-        emissive={0x000000}
+        emissive="red"
+        // emissive={0x000000}
         roughness={roughness} // 윤기
         metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
       />

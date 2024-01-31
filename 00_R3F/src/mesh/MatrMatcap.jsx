@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
-import MapCapImg from "../img/crystal.png";
+import MapCapImg from "../../public/img/crystal.png";
 
-function Matcap() {
-  const matcap = useLoader(THREE.TextureLoader, MapCapImg);
+function MatrMatcap() {
+  // const matcap = useLoader(THREE.TextureLoader, MapCapImg);
+  const matcap = useTexture("./img/crystal.png");
   // const matcap = useTexture("https://raw.githubusercontent.com/nidorx/matcaps/master/1024/593E2C_E5D8A9_BC9F79_9F8A68.png");
 
   // matcap이미지 파일은 이미 조명을 포함한 이미지를 그대로 보여줘서 조명이 필요없음.
@@ -20,4 +21,4 @@ function Matcap() {
   );
 }
 
-export default Matcap;
+export default MatrMatcap;
