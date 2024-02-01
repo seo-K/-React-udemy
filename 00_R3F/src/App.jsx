@@ -37,45 +37,51 @@ function App() {
     "MeshToonMaterial",
   ];
 
+  const dreiMeshList = ["MeshReflectorMaterial", "MeshRefractionMaterial", "MeshTransmissionMaterial", "MeshWobbleMaterial", "MeshDiscardMaterial", "shaderMaterial"];
+
   const [activeGeometryTab, setActiveGeometryTab] = useState(GeometryList[0]);
   const [activeMeshTab, setActiveMeshTab] = useState(MeshList[0]);
+  const [activeDreiMeshTab, setActiveDreiMeshTab] = useState(dreiMeshList[0]);
 
-  console.log(activeMeshTab);
   return (
     <>
-      <nav className="tab">
-        {GeometryList.map((item) => {
-          return (
-            <button type="button" key={item + "_tab"} onClick={() => setActiveGeometryTab(item)} className={activeGeometryTab === item ? "active" : undefined}>
-              {item}
-            </button>
-          );
-        })}
-      </nav>
-      <nav className="tab">
-        {MeshList.map((item) => {
-          return (
-            <button
-              type="button"
-              key={item + "_tab"}
-              onClick={() => setActiveMeshTab(item)}
-              className={activeMeshTab === item ? "active" : undefined}
-              value={item}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </nav>
-
+      <div className="menu">
+        <nav className="tab">
+          {GeometryList.map((item) => {
+            return (
+              <button type="button" key={item + "_tab"} onClick={() => setActiveGeometryTab(item)} className={activeGeometryTab === item ? "active" : undefined}>
+                {item}
+              </button>
+            );
+          })}
+        </nav>
+        <nav className="tab">
+          {MeshList.map((item) => {
+            return (
+              <button type="button" key={item + "_tab"} onClick={() => setActiveMeshTab(item)} className={activeMeshTab === item ? "active" : undefined} value={item}>
+                {item}
+              </button>
+            );
+          })}
+        </nav>
+        <nav className="tab">
+          {dreiMeshList.map((item) => {
+            return (
+              <button type="button" key={item + "_tab"} onClick={() => setActiveDreiMeshTab(item)} className={activeDreiMeshTab === item ? "active" : undefined} value={item}>
+                {item}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
       {/* 카메라로부터 거리가 3.5인 픽셀은 그 값을 0으로 할당하고, 카메라로부터 거리가 6인치점은 2를 할당받아서 만들어진 재질 */}
       {activeMeshTab == "MeshDepthMaterial" ? (
         <Canvas camera={{ near: 3.5, far: 6 }}>
-          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
+          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
         </Canvas>
       ) : (
         <Canvas>
-          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} />
+          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
         </Canvas>
       )}
 

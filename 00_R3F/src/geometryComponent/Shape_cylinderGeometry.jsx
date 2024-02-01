@@ -12,7 +12,7 @@ function Shape_cylinderGeometry() {
     height: { value: 1, min: 0.1, max: 5, step: 0.01 },
     radialSegments: { value: 32, min: 3, max: 256, step: 1 },
     heightSegments: { value: 32, min: 1, max: 256, step: 1 },
-    bottomOpen: { value: true },
+    bottomOpen: { value: false },
     thetaStart: { value: 0, min: 0, max: 360, step: 0.01 },
     thetaLength: { value: 360, min: 0, max: 360, step: 0.01 },
   });

@@ -12,6 +12,8 @@
 
 ![alt text](./image/three2.png)
 
+# Shape
+
 ## 메쉬, 선, 점 기하학의 표현입니다.
 
 - BoxGeometry (박스)
@@ -129,7 +131,18 @@
 - MeshDepthMaterial = 음영으로 깊이를 표현 재질
 - MeshMatcapMaterial = matcap 이미지 파일을 그대로 입히는 재질. (이미지 파일은 이미 조을 포함하여, 광원이 필요없음)
 - MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘) 백터를 RGB 색상으로 매핑하는 재질
-- MeshToonMaterial
+- MeshToonMaterial = 작은 픽셀로 만화같은 효과를 주는 재질
+
+## Drei 재질의 종류
+
+// import {meshReflectorMaterial} from "@react-three/drei"; 이런식으로 추가해줘야함.
+
+- MeshReflectorMaterial = 다른 메쉬가 반사되는 재질 (거울이나 대리석들의 재질)
+- MeshRefractionMaterial = 다이아몬드와 같은 반짝거리는 보석을 표현하기 좋음
+- MeshTransmissionMaterial = 유리재질
+- MeshWobbleMaterial
+- MeshDiscardMaterial
+- shaderMaterial
 
 ![alt text](https://velog.velcdn.com/images/blcklamb/post/62a4e78c-fc84-46cd-9d02-f9a053c898dd/image.png)
 ![alt text](./image/three7.png)
@@ -166,8 +179,13 @@ R3f 셋팅 방법
 1.  npm i @types/three @react-three/fiber
 
 라이브러리
-Drei : R3F에서 사용할 수 있는 유용한 컴포넌트들을 모아놓은 라이브러리 입니다. ex) OrbitControls [3D 카메라 컨트롤]
-npm i @react-three/drei
+react-three/drei : "Drei"는 독일어로 "3"을 나타내냄. React와 Three.js를 함께 사용할 때 유용한 몇 가지 도움 함수와 컴포넌트를 제공하는 라이브러리
+
+- OrbitControls [3D 카메라 컨트롤] 3D 장면을 마우스로 돌리고 확대/축소할 수 있음
+- Sky: 대기와 하늘을 렌더링하는 데 사용되는 구름, 햇빛 등의 구성 요소를 갖춘 Sky 컴포넌트.
+
+> npm i @react-three/drei
 
 Leva : R3F에서 사용할 수 있는 장면과 상호 작용할 수 있는 조절툴. ex) useControls
-npm i leva
+
+> npm i leva

@@ -1,4 +1,4 @@
-import { Box, OrbitControls } from "@react-three/drei";
+import { Box, MeshReflectorMaterial, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
 
@@ -17,6 +17,9 @@ import MatrDepth from "./mesh/MatrDepth";
 import MatrMatcap from "./mesh/MatrMatcap";
 import MatrNormal from "./mesh/MatrNormal";
 import MatrToon from "./mesh/MatrToon";
+import MatrReflector from "./mesh/MatrReflector";
+import MatrRefraction from "./mesh/MatrRefraction";
+import MatrTransmission from "./mesh/MatrTransmission";
 
 function MyBox(props) {
   const geom = new THREE.BoxGeometry();
@@ -24,7 +27,7 @@ function MyBox(props) {
   return <mesh {...props} geometry={geom}></mesh>;
 }
 
-function GeometryContent({ selectedGeometry, selectedMesh }) {
+function GeometryContent({ selectedGeometry, selectedMesh, selectedDreiMesh }) {
   // 글자 변환 함수
   function lowerCaseFirstText(str) {
     let result = str[0].toLowerCase() + str.slice(1, str.length);
@@ -95,9 +98,38 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
     },
   ];
 
+  const dreiMeshComponents = [
+    {
+      mesh: "meshReflectorMaterial",
+      component: <MatrReflector />,
+    },
+    {
+      mesh: "meshRefractionMaterial",
+      component: <MatrRefraction />,
+    },
+    {
+      mesh: "MeshTransmissionMaterial",
+      component: <MatrTransmission />,
+    },
+    // {
+    //   mesh: "MeshWobbleMaterial",
+    //   component: <MatrWobble />,
+    // },
+    // {
+    //   mesh: "MeshDiscardMaterial",
+    //   component: <MatrDiscard />,
+    // },
+    // {
+    //   mesh: "shaderMaterial",
+    //   component: <MatrShader />,
+    // },
+  ];
+
   const Geometry = lowerCaseFirstText(selectedGeometry);
   const Mesh = lowerCaseFirstText(selectedMesh);
+  const dreiMesh = lowerCaseFirstText(selectedDreiMesh);
 
+  console.log(dreiMesh);
   const globalGeometry = new THREE[selectedGeometry](); // const globalGeometry = new THREE.BoxGeometry();
   const globalMaterial = new THREE[selectedMesh](); // const globalMaterial = new THREE.MeshBasicMaterial();
 
@@ -127,12 +159,8 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
 
       {/* 1. 기본 */}
       <mesh position={[-2, 0, 0]}>
-        {GeometryComponents.map((item, index) =>
-          Geometry === item.geometry ? React.cloneElement(item.component, { key: item.geometry + "_geom_content" }) : null
-        )}
-        {MeshComponents.map((item, index) =>
-          Mesh === item.mesh ? React.cloneElement(item.component, { key: item.mesh + "_mesh_content", color: meshColor }) : null
-        )}
+        {GeometryComponents.map((item, index) => (Geometry === item.geometry ? React.cloneElement(item.component, { key: item.geometry + "_geom_content" }) : null))}
+        {MeshComponents.map((item, index) => (Mesh === item.mesh ? React.cloneElement(item.component, { key: item.mesh + "_mesh_content" }) : null))}
       </mesh>
 
       {/* 2. THREE 내장함수 */}
@@ -148,6 +176,9 @@ function GeometryContent({ selectedGeometry, selectedMesh }) {
       <MyBox position={[4, 0, 0]}>
         <Mesh color="#e74c3c" />
       </MyBox>
+
+      {/* Drei Mesh Componets */}
+      {dreiMeshComponents.map((item, index) => (dreiMesh === item.mesh ? React.cloneElement(item.component, { key: item.mesh + "_drei_mesh_content" }) : null))}
     </>
   );
 }

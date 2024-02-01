@@ -3,6 +3,8 @@ import { useEffect, useState, useRef } from "react";
 import { useControls } from "leva";
 import * as THREE from "three";
 
+import Material_MeshReflectorMaterial from "./meshComponent/Material_MeshReflectorMaterial";
+
 function MyElement3D() {
   const 박스_재질 = useRef();
   const 도넛_재질 = useRef();
