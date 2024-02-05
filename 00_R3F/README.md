@@ -134,7 +134,7 @@
 - MeshToonMaterial = 작은 픽셀로 만화같은 효과를 주는 재질
 
 * 법선 벡터 = 입체감을 나타냄
-  ![alt text](./publick/img/법선벡터.jpg)
+  ![alt text](./public/img/법선벡터.jpg)
   - 실제로 돌출되지 않음
   - x,y,z 공간상의 방향에 대한 정보를 가지고 있다 (R,G,B 값을 이용)
   - 면에대한 수직 벡터로 광원에 대한 시각적인 효과를 계산하기 위해 사용함.
@@ -160,54 +160,166 @@
 ## 재질에 대한 다양한 맵핑 속성
 
 > 텍스처 맵핑 = 메시 표면에 이미지 데이터를 사용하여, 보다 사실적인 재질을 표현하기 위한 기술
+> Procedural Material = 3차원에서 매우 사실적인 재질을 효과적으로 표현하기 위한 기능이지만, r3f(실시간 렌더링 엔진)에선 구현이 불가능해서 Baking(procedural Material을 텍스쳐 이미지로 만드는 것) 하여 랜더링된 이미지를 다양한 mapping속성을 사용하여 구현.
 
-- map : 해당 재질 이미지를 입힘
-- roughnessMap, roughnessMap-colorSpace = 거친 재질을 입혀 거칠기를 표현
-- metalnessMap, metalnessMap-colorSpace, metalness : 메탈 속성을 추가한 뒤, 메탈 재질을 넣어 메탈릭함을 표현 (매털락 설정 꼭해야함)
-- normalMap, normalMap-colorSpace, normalScale : 법선 벡터(실제론 돌출되지 않았으나, xyz에 rgb값을 이용하여 공간상 방향에 대한 정보를 가지고있는 이미지)룰 사용하여 광원에 대한 음영 효과를 변경하여, 입체감을 표현
-- displacementMap, displacementMap-colorSpace, displacementScale, displacementBias : 실제 메쉬에 변형을 가하여, 입체감을 표현, 법선벡터는 눈속임 기법이지만, 이건 비트맵 명도에 따라 실제 mesh를 생성해주는 기법
+1. map : 해당 재질 이미지를 입힘
+2. roughnessMap, roughnessMap-colorSpace = 거친 재질을 입혀 거칠기를 표현
+3. metalnessMap, metalnessMap-colorSpace, metalness : 메탈 속성을 추가한 뒤, 메탈 재질을 넣어 메탈릭함을 표현 (매털락 설정 꼭해야함)
+4. normalMap, normalMap-colorSpace, normalScale : 법선 벡터(실제론 돌출되지 않았으나, xyz에 rgb값을 이용하여 공간상 방향에 대한 정보를 가지고있는 이미지)룰 사용하여 광원에 대한 음영 효과를 변경하여, 입체감을 표현
+5. displacementMap, displacementMap-colorSpace, displacementScale, displacementBias : 실제 메쉬에 변형을 가하여, 입체감을 표현, 법선벡터는 눈속임 기법이지만, 이건 비트맵 명도에 따라 실제 mesh를 생성해주는 기법
+6. aoMap = ambient occlusion map (앰비언트 오클루전 맵) : 그림자 이기 때문에 두가지 추가 요소가 필요함. 1. ambientLight 빛이 필요 2. geometry에 UV2 라는 속성이 필요함.
+7. alphaMap = 투명도 (색상이 어두울수록, 투명도가 높아짐) = transparent 를 추가해야함, 필요에따라 alphaToCoverage(안티 앨리어싱(anti-aliasing) 기술 중 하나로, 투명한 객체의 가장자리를 부드럽게 만들어 줌. 물방울이나 유리같은거? 주로 투명한 객체들이 배경과 어우러질 때, 부드럽고 자연스럽게 블렌딩되도록 도와줌.) 추가 가능.
 
 ```
-  const texture = useTexture({
+const texture = useTexture({
     map: "../img/glass/Glass_Window_002_basecolor.jpg",
     roughnessMap: "../img/glass/Glass_Window_002_roughness.jpg",
-    metallicMap: "../img/glass/Glass_Window_002_metallic.jpg",
+    metalnessMap: "../img/glass/Glass_Window_002_metallic.jpg",
     normalMap: "../img/glass/Glass_Window_002_normal.jpg",
     displacementMap: "../img/glass/Glass_Window_002_height.png",
+    aoMap: "../img/glass/Glass_Window_002_ambientOcclusion.jpg",
+    alphaMap: "../img/glass/Glass_Window_002_opacity.jpg",
   });
 
-  <mesh position={[0, 0, 2]} scale={0.4}>
-    <cylinderGeometry args={[2, 2, 3, 256, 256, true]} />
-    <meshStandardMaterial
-      // wireframe
-      side={THREE.DoubleSide}
-      map={texture.map}
-      // 거칠기
-      roughnessMap={texture.roughnessMap}
-      roughnessMap-colorSpace={THREE.NoColorSpace}
-      // 메탈
-      metalnessMap={texture.metallicMap}
-      metalnessMap-colorSpace={THREE.NoColorSpace}
-      metalness={0.5}
-      // 법선 벡터 normal Vactor
-      normalMap={texture.normalMap}
-      normalMap-colorSpace={THREE.NoColorSpace}
-      normalScale={[1, 1]} // 입체 효과가 강하게 들어가는 정도
-      // Displacement map(디스플레이스먼트맵/디스맵) =   wireframe 로 확인
-      // - 실제 메쉬에 변형을 가함
-      // - 실제 메쉬를 변형하므로 그에 대한 그림자가 생기게되지만, 디테일한 설정이 필요하면 디스맵에 더불어 노멀맵도 같이 사용해야함(아래 참고)
-      // 모델링하기 힘든 굴곡들을 displacement map으로 적용된 이미지의 밝고, 어두움을 기준으로 형성해주는 기법 (분할수를 늘려야함 segment가 꼭 필요함)
-      // normal map은 눈속임 기법인 것에 반해 displacement map은 비트맵의 명도에 따라 실제 mesh를 생성해주는 기법
-      displacementMap={texture.displacementMap}
-      displacementMap-colorSpace={THREE.NoColorSpace}
-      displacementScale={0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
-      displacementBias={-0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
-    />
-  </mesh>
+  const mesh = useRef();
+
+  useEffect(() => {
+    // 앞서 texture로 선언한 것들의 x축 = 수평을 4번 반복함.
+    texture.map.repeat.x =
+      texture.displacementMap.repeat.x =
+      texture.aoMap.repeat.x =
+      texture.roughnessMap.repeat.x =
+      texture.metalnessMap.repeat.x =
+      texture.normalMap.repeat.x =
+      texture.alphaMap.repeat.x =
+        4;
+
+    // 반복이 시작되는 시점에서 어떻게 이미지를 랜더링할건지 (warpS = x축, warpT = y축)
+    texture.map.wrapS =
+      texture.displacementMap.wrapS =
+      texture.aoMap.wrapS =
+      texture.roughnessMap.wrapS =
+      texture.metalnessMap.wrapS =
+      texture.normalMap.wrapS =
+      texture.alphaMap.wrapS =
+        THREE.MirroredRepeatWrapping;
+    mesh.current.geometry.setAttribute("uv2", new THREE.BufferAttribute(mesh.current.geometry.attributes.uv.array, 2));
+  }, []);
+
+  // 텍스쳐 개체 재랜더링
+  texture.map.needsUpdate =
+    texture.roughnessMap.needsUpdate =
+    texture.metalnessMap.needsUpdate =
+    texture.normalMap.needsUpdate =
+    texture.displacementMap.needsUpdate =
+    texture.aoMap.needsUpdate =
+    texture.alphaMap.needsUpdate =
+      true;
+
+  // aoMap
+  // useEffect(() => {
+  //   mesh.current.geometry.setAttribute("uv2", new THREE.BufferAttribute(mesh.current.geometry.attributes.uv.array, 2));
+  // }, []);
+
+ {/* mapping */}
+      <mesh scale={0.4} ref={mesh}>
+        <cylinderGeometry args={[2, 2, 3, 256, 256, true]} />
+        <meshStandardMaterial
+          // wireframe
+          side={THREE.DoubleSide}
+          map={texture.map}
+          // 거칠기
+          roughnessMap={texture.roughnessMap}
+          roughnessMap-colorSpace={THREE.NoColorSpace}
+          // 메탈
+          metalnessMap={texture.metalnessMap}
+          metalnessMap-colorSpace={THREE.NoColorSpace}
+          metalness={0.5}
+          // 법선 벡터 normal Vactor
+          normalMap={texture.normalMap}
+          normalMap-colorSpace={THREE.NoColorSpace}
+          normalScale={[1, 1]} // 입체 효과가 강하게 들어가는 정도
+          // Displacement map(디스플레이스먼트맵/디스맵) =   wireframe 로 확인
+          // - 실제 메쉬에 변형을 가함
+          // - 실제 메쉬를 변형하므로 그에 대한 그림자가 생기게되지만, 디테일한 설정이 필요하면 디스맵에 더불어 노멀맵도 같이 사용해야함(아래 참고)
+          // 모델링하기 힘든 굴곡들을 displacement map으로 적용된 이미지의 밝고, 어두움을 기준으로 형성해주는 기법 (분할수를 늘려야함 segment가 꼭 필요함)
+          // normal map은 눈속임 기법인 것에 반해 displacement map은 비트맵의 명도에 따라 실제 mesh를 생성해주는 기법
+          displacementMap={texture.displacementMap}
+          displacementMap-colorSpace={THREE.NoColorSpace}
+          displacementScale={0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
+          displacementBias={-0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
+          // aoMap = ambient occlusion map (앰비언트 오클루전 맵) = 메쉬 표면에 이미 만들어둔 그림자로 입체감을 살리는 역할
+          // 그림자 이기 때문에 두가지 추가 요소가 필요함.
+          // 1. ambientLight 빛이 필요 2. geometry에 UV2 라는 속성이 필요함.
+          aoMap={texture.aoMap}
+          // 알파맵 = 투명도 (색상이 어두울수록, 투명도가 높아짐)
+          // transparent 를 추가해야함
+          alphaMap={texture.alphaMap}
+          transparent
+          // alphaToCoverage // 안티 앨리어싱(anti-aliasing) 기술 중 하나로, 투명한 객체의 가장자리를 부드럽게 만들어 줍니다. 물방울이나 유리같은거? 주로 투명한 객체들이 배경과 어우러질 때, 부드럽고 자연스럽게 블렌딩되도록 도와줍니다.
+        />
+      </mesh>
 
 ```
 
+## 광원 (Light)
+
+![alt text](./public/img/광원.jpg)
+
+> Three.js에서 제공하는 광원 클래스
+
+1. AmbientLight (주변광)
+
+- <ambientLight color="#ff0000" intensity={0.2} /> = 광원의 색상과 세기
+- intensity={0.1} 으로 설정하여 광원의 영향을 받지못하는 객체도 살짝보이게 설정
+
+2. HemisphereLight (주변광, 색상2개)
+
+- <hemisphereLight args={["위에서_아래로_비추는_색상", "땅에서_비추는_색상", 빛의세기]} /> <hemisphereLight args={["#00f", "#f00", 2]} />
+- 지상에서 비추는 빛 & 바닥에서 비추는 빛 두가지로 구성되어있음.
+
+3. DirectionalLight (특정 방향으로 향하는 빛)
+
+- <directionalLight color={0xffffff} intensity={1} position={[0, 5, 0]} /> position 은 빛 쏘는 위치
+- <directionalLight ref={light} color={0xffffff} intensity={1} position={[0, 5, 0]} target-position={[-10, 2, 10]} /> target-position 빛이 쏘는 타켓 위치
+- useHelper을 사용하여 빛의 방향을 확인하기
+
+4. PointLight (모든 방향으로 비추는 빛)
+
+- <pointLight ref={light} color="#fff" intensity={20} position={[0, 5, 0]} distance={2} /> distance 는 빛이 닿는 거리이며, 기본값은 0 = 무한한 거리, 이후 1, 2,.. 까지만 빛이 닿음.
+
+5. SpotLight (조명광 = 깔대기 모양으로 쌰~)
+
+- <spotLight ref={light} color={0xffffff} intensity={10} position={[0, 5, 0]} target-position={[0, 0, 0]} distance={10} angle={THREE.MathUtils.degToRad(30)} penumbra={0.2} /> angle : 꼬깔콘의 크기, penumbra 빛번짐 (0~1) (빛의 감쇄)
+
+6. RectAreaLight (형광등처럼 비추는 빛)
+
+- <rectAreaLight ref={light} color="#fff" intensity={20} width={1} height={3} position={[0, 5, 0]} rotation-x={THREE.MathUtils.degToRad(-90)} /> width, height : 광원의 크기 rotation-x : 빛의 각도
+
+> Drei에서 제공하는 컴포넌트
+
+1. Environment (주위 환경을 촬영한 이미지를 이용한 빛)
+
+- <Environment blur={0.1} background files={"./public/img/4k.hdr"} /> background 속성으로 배경을 보이게 할 수 있고, blur 로 배경을 흐리게 처리도 가능.
+- https://polyhaven.com/hdris 에서 맘에드는거 4k hdr, exr로 다운로드
+- 배경의 조명을 받고, 배경을 그대로 보일 수 있음.
+
 - 물리기반 렌더링 (PBR = Physically Based Rendering)
+
+## 카메라(Camera)
+
+![alt text](./public/img/카메라jpg)
+
+1. Perspective Camera (원근감을 제공하는 카메라) [ 기본 카메라 ]
+2. Orthographic Camera (원근감이 없는 카메라) [ 멀리있어도 같은 크기면 같게보임 ]
+
+> 절두체
+
+![alt text](./public/img/카메라_절두체.jpg)
+
+- 절두체에 포함된 부분만 렌더링됨. 결론은 카메라를 정의한다는건 절두체를 정의한다는 말과 같음.
+
+![alt text](./public/img/카메라_파라메터.jpg)
 
 ### R3F
 

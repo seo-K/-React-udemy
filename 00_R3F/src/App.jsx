@@ -1,6 +1,8 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
-import MyElement3D from "./MyElement3D";
+// import MyElement3D from "./MyElement3D";
+import MyElement3D_light from "./MyElement3D_light";
+import MyElement3DCamera from "./MyElement3D_camera";
 import GeometryContent from "./GeometryContent.jsx";
 import { useState } from "react";
 
@@ -85,8 +87,24 @@ function App() {
         </Canvas>
       )} */}
 
-      <Canvas>
+      {/* <Canvas
+        camera={{
+          fov: 75,
+          position: [7, 7, 0],
+        }}
+      >
         <MyElement3D />
+      </Canvas>
+      <Canvas
+        camera={{
+          fov: 75,
+          position: [7, 7, 0],
+        }}
+      >
+        <MyElement3D_light />
+      </Canvas> */}
+      <Canvas>
+        <MyElement3DCamera />
       </Canvas>
 
       {/* <Canvas>
