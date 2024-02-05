@@ -37,7 +37,7 @@ function App() {
     "MeshToonMaterial",
   ];
 
-  const dreiMeshList = ["MeshReflectorMaterial", "MeshRefractionMaterial", "MeshTransmissionMaterial", "MeshWobbleMaterial", "MeshDiscardMaterial", "shaderMaterial"];
+  const dreiMeshList = ["MeshReflectorMaterial", "MeshRefractionMaterial", "MeshTransmissionMaterial", "MeshWobbleMaterial", "MeshDistortMaterial", "shaderMaterial"];
 
   const [activeGeometryTab, setActiveGeometryTab] = useState(GeometryList[0]);
   const [activeMeshTab, setActiveMeshTab] = useState(MeshList[0]);
@@ -75,7 +75,7 @@ function App() {
         </nav>
       </div>
       {/* 카메라로부터 거리가 3.5인 픽셀은 그 값을 0으로 할당하고, 카메라로부터 거리가 6인치점은 2를 할당받아서 만들어진 재질 */}
-      {activeMeshTab == "MeshDepthMaterial" ? (
+      {/* {activeMeshTab == "MeshDepthMaterial" ? (
         <Canvas camera={{ near: 3.5, far: 6 }}>
           <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
         </Canvas>
@@ -83,7 +83,11 @@ function App() {
         <Canvas>
           <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
         </Canvas>
-      )}
+      )} */}
+
+      <Canvas>
+        <MyElement3D />
+      </Canvas>
 
       {/* <Canvas>
         <MyElement3D />

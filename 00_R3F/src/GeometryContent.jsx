@@ -1,4 +1,4 @@
-import { Box, MeshReflectorMaterial, OrbitControls } from "@react-three/drei";
+import { Box, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import React from "react";
 
@@ -20,6 +20,9 @@ import MatrToon from "./mesh/MatrToon";
 import MatrReflector from "./mesh/MatrReflector";
 import MatrRefraction from "./mesh/MatrRefraction";
 import MatrTransmission from "./mesh/MatrTransmission";
+import MatrWobble from "./mesh/MatrWobble";
+import MatrDistort from "./mesh/MatrDistort";
+import MatrShader from "./mesh/MatrShader";
 
 function MyBox(props) {
   const geom = new THREE.BoxGeometry();
@@ -108,21 +111,21 @@ function GeometryContent({ selectedGeometry, selectedMesh, selectedDreiMesh }) {
       component: <MatrRefraction />,
     },
     {
-      mesh: "MeshTransmissionMaterial",
+      mesh: "meshTransmissionMaterial",
       component: <MatrTransmission />,
     },
-    // {
-    //   mesh: "MeshWobbleMaterial",
-    //   component: <MatrWobble />,
-    // },
-    // {
-    //   mesh: "MeshDiscardMaterial",
-    //   component: <MatrDiscard />,
-    // },
-    // {
-    //   mesh: "shaderMaterial",
-    //   component: <MatrShader />,
-    // },
+    {
+      mesh: "meshWobbleMaterial",
+      component: <MatrWobble />,
+    },
+    {
+      mesh: "meshDistortMaterial",
+      component: <MatrDistort />,
+    },
+    {
+      mesh: "shaderMaterial",
+      component: <MatrShader />,
+    },
   ];
 
   const Geometry = lowerCaseFirstText(selectedGeometry);
@@ -173,9 +176,9 @@ function GeometryContent({ selectedGeometry, selectedMesh, selectedDreiMesh }) {
       <mesh position={[2, 0, 0]} geometry={globalGeometry} material={globalMaterial} />
 
       {/* 4. 컴포넌트화 */}
-      <MyBox position={[4, 0, 0]}>
+      {/* <MyBox position={[4, 0, 0]}>
         <Mesh color="#e74c3c" />
-      </MyBox>
+      </MyBox> */}
 
       {/* Drei Mesh Componets */}
       {dreiMeshComponents.map((item, index) => (dreiMesh === item.mesh ? React.cloneElement(item.component, { key: item.mesh + "_drei_mesh_content" }) : null))}

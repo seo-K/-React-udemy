@@ -1,5 +1,3 @@
-import * as THREE from "three";
-import { useControls } from "leva";
 import { MeshReflectorMaterial } from "@react-three/drei";
 
 function MatrReflector({ meshColor }) {

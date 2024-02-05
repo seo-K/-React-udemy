@@ -62,7 +62,7 @@
 
 - 정점(Vertex) = xyz 좌표
 - 정점 인덱스(Vertex Index) = 면을 구성
-- 수직 벡터(Normal Vector)
+- 수직 벡터(Normal Vector) = 법선 벡터
 - 정점 색상(Vertex Color)
 - 텍스트 멥핑을 위한 UV 좌표
 - 사용자 정의 데이터
@@ -133,22 +133,81 @@
 - MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘) 백터를 RGB 색상으로 매핑하는 재질
 - MeshToonMaterial = 작은 픽셀로 만화같은 효과를 주는 재질
 
+* 법선 벡터 = 입체감을 나타냄
+  ![alt text](./publick/img/법선벡터.jpg)
+  - 실제로 돌출되지 않음
+  - x,y,z 공간상의 방향에 대한 정보를 가지고 있다 (R,G,B 값을 이용)
+  - 면에대한 수직 벡터로 광원에 대한 시각적인 효과를 계산하기 위해 사용함.
+  - 어떤 면에 대한 수직 방향의 벡터를 의미 광원에 대한 음영 효과를 변경할 수 있음.
+
 ## Drei 재질의 종류
+
+// https://github.com/pmndrs/drei?tab=readme-ov-file
 
 // import {meshReflectorMaterial} from "@react-three/drei"; 이런식으로 추가해줘야함.
 
 - MeshReflectorMaterial = 다른 메쉬가 반사되는 재질 (거울이나 대리석들의 재질)
 - MeshRefractionMaterial = 다이아몬드와 같은 반짝거리는 보석을 표현하기 좋음
-- MeshTransmissionMaterial = 유리재질
-- MeshWobbleMaterial
-- MeshDiscardMaterial
-- shaderMaterial
+- MeshTransmissionMaterial = 유리재질 (유리 수정구슬 만들 수 있음)
+- MeshWobbleMaterial = shape가 귀엽게 앙탈부리며 흔들리는 애니메이션 재질
+- MeshDistortMaterial = shape 이 계란후라이처럼 퍼져서 흔들리는 재질
+- MeshDiscardMaterial = 아무것도 렌더링하지 않는 재질입니다. 이에 비해 <mesh visible={false}></mesh>그림자와 하위 항목은 표시하면서 장면에서 객체를 숨기는 데 사용할 수 있습니다.
+- shaderMaterial = 그림자 효과
 
 ![alt text](https://velog.velcdn.com/images/blcklamb/post/62a4e78c-fc84-46cd-9d02-f9a053c898dd/image.png)
 ![alt text](./image/three7.png)
 
+## 재질에 대한 다양한 맵핑 속성
+
+> 텍스처 맵핑 = 메시 표면에 이미지 데이터를 사용하여, 보다 사실적인 재질을 표현하기 위한 기술
+
+- map : 해당 재질 이미지를 입힘
+- roughnessMap, roughnessMap-colorSpace = 거친 재질을 입혀 거칠기를 표현
+- metalnessMap, metalnessMap-colorSpace, metalness : 메탈 속성을 추가한 뒤, 메탈 재질을 넣어 메탈릭함을 표현 (매털락 설정 꼭해야함)
+- normalMap, normalMap-colorSpace, normalScale : 법선 벡터(실제론 돌출되지 않았으나, xyz에 rgb값을 이용하여 공간상 방향에 대한 정보를 가지고있는 이미지)룰 사용하여 광원에 대한 음영 효과를 변경하여, 입체감을 표현
+- displacementMap, displacementMap-colorSpace, displacementScale, displacementBias : 실제 메쉬에 변형을 가하여, 입체감을 표현, 법선벡터는 눈속임 기법이지만, 이건 비트맵 명도에 따라 실제 mesh를 생성해주는 기법
+
+```
+  const texture = useTexture({
+    map: "../img/glass/Glass_Window_002_basecolor.jpg",
+    roughnessMap: "../img/glass/Glass_Window_002_roughness.jpg",
+    metallicMap: "../img/glass/Glass_Window_002_metallic.jpg",
+    normalMap: "../img/glass/Glass_Window_002_normal.jpg",
+    displacementMap: "../img/glass/Glass_Window_002_height.png",
+  });
+
+  <mesh position={[0, 0, 2]} scale={0.4}>
+    <cylinderGeometry args={[2, 2, 3, 256, 256, true]} />
+    <meshStandardMaterial
+      // wireframe
+      side={THREE.DoubleSide}
+      map={texture.map}
+      // 거칠기
+      roughnessMap={texture.roughnessMap}
+      roughnessMap-colorSpace={THREE.NoColorSpace}
+      // 메탈
+      metalnessMap={texture.metallicMap}
+      metalnessMap-colorSpace={THREE.NoColorSpace}
+      metalness={0.5}
+      // 법선 벡터 normal Vactor
+      normalMap={texture.normalMap}
+      normalMap-colorSpace={THREE.NoColorSpace}
+      normalScale={[1, 1]} // 입체 효과가 강하게 들어가는 정도
+      // Displacement map(디스플레이스먼트맵/디스맵) =   wireframe 로 확인
+      // - 실제 메쉬에 변형을 가함
+      // - 실제 메쉬를 변형하므로 그에 대한 그림자가 생기게되지만, 디테일한 설정이 필요하면 디스맵에 더불어 노멀맵도 같이 사용해야함(아래 참고)
+      // 모델링하기 힘든 굴곡들을 displacement map으로 적용된 이미지의 밝고, 어두움을 기준으로 형성해주는 기법 (분할수를 늘려야함 segment가 꼭 필요함)
+      // normal map은 눈속임 기법인 것에 반해 displacement map은 비트맵의 명도에 따라 실제 mesh를 생성해주는 기법
+      displacementMap={texture.displacementMap}
+      displacementMap-colorSpace={THREE.NoColorSpace}
+      displacementScale={0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
+      displacementBias={-0.2} // displacementMap을 사용하면 뚱뚱해져서 이걸 조절해야댐
+    />
+  </mesh>
+
+```
+
 - 물리기반 렌더링 (PBR = Physically Based Rendering)
--
 
 ### R3F
 

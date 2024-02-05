@@ -19,7 +19,7 @@ function Material_MeshRefractionMaterial({ selectedGeometry, selectedMesh }) {
         {(texture) => (
           <mesh>
             <dodecahedronGeometry />
-            <MeshRefractionMaterial envMap={texture} toneMapped={false} bounces={2} aberrationStrength={0.03} ior={2.75} fresnel={1} color="white" fastChroma="true" />
+            <MeshRefractionMaterial envMap={texture} toneMapped={false} bounces={2} aberrationStrength={0.03} ior={2.75} fresnel={1} fastChroma="true" />
           </mesh>
         )}
       </CubeCamera>

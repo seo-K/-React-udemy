@@ -6,6 +6,7 @@ body {
 #root {
   width: 100%;
   height: 100vh;
+  background-color: #000;
 }
 .menu {
   position: fixed;
@@ -21,6 +22,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  display: none;
 }
 .tab button {
   font-size: 1.2rem;
