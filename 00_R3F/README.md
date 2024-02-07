@@ -119,15 +119,90 @@
 3. Mesh 재질(면 재질)
 
 - MeshBasicMaterial = 평면. 광원의 영향을 받지 않는면 | 반사광, 하이라이트가 없는 재질
+
+  `<meshBasicMaterial color="#2c3e50" roughness={0.5} metalness={0.5} side={THREE.DoubleSide} />`
+
 - MeshLambertMaterial = 광원의 영향을 받는 면 (기본적인 듯)
+
+  `<meshLambertMaterial
+  visible={true} // 화면에 보여지는지 유무
+  transparent={false} // 투명 효과 (opacity랑 함께 사용)
+  opacity={1} // 투명도
+  // depthBuffer(Z축 버퍼로 가까이 있는 것이 진해보이는 엑스레이같은 것)
+  depthTest={true} // 렌더링 되고 있는 메쉬의 픽셀을 화면에 그릴때 depthBuffer 값을 이용해 검사할 것인지에 대한 여부
+  depthWrite={true} // 렌더링 되고 있는 메쉬의 픽셀에 대한 Z값을 depthBuffer에 기록할 것인지 여부
+  side={THREE.FrontSide} // 메쉬를 구서앟는 면에 대해서 앞면만 렌더링할건지 앞면과 뒷면을 모두 렌더링할건지. [FrontSide | BackSide | DoubleSide]
+  color={meshColor} // 컬러
+  wireframe={true} // 프레임
+  emissive={0x66600} // 방출하는 색상
+/>
+`
+
 - MeshPhongMaterial = 빛나는 글로우 면 (픽셀단위로 광원의 영향을 계산하는 재질 LamerMaterial 보다 정교한 쉐이딩 효과를 얻을 수 있음.)
   , 반사 하이라이트가 있는 광택있는 표면 재질
+
+  `<meshPhongMaterial
+  visible={true}
+  transparent={true}
+  opacity={1}
+  depthTest={true}
+  depthWrite={true}
+  side={THREE.FrontSide}
+  color={meshColor}
+  emissive="blue"
+  specular={meshColor} // 광원에 의해 반사되는 색상값 (기본값은 연한회색색)
+  shininess={100} // 빛나는 수준
+  flatShading={false} // 메쉬를 평평하게 렌더링할지 여부.
+  wireframe={false}
+/>
+`
 
 ## 3차원 그래픽에서 가장 많이 사용되는 재질
 
 - 고품질이지만. 속도면에서는 이 전 두개보다 조금 느림.
 - MeshStandardMaterial
+
+  `    <meshStandardMaterial
+  visible={true}
+  transparent={false}
+  opacity={1}
+  depthTest={true}
+  depthWrite={true}
+  side={THREE.FrontSide}
+  color={meshColor}
+  emissive="red"
+  // emissive={0x000000}
+  roughness={roughness} // 윤기
+  metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
+/>`
+
   - MeshPhysicalMaterial = 반사성을 더 조절할 수 있는 MeshStandardMaterial의 확장 ( 유리같은 표현 가능 )
+
+    `<meshPhysicalMaterial
+  visible={true}
+  transparent={true} // 유리효과는 투명 효과를 켜줘야함
+  opacity={1}
+  depthTest={true}
+  depthWrite={true}
+  // side={THREE.FrontSide}
+  side={THREE.DoubleSide}
+  color={meshColor}
+  emissive="blue"
+  // emissive={0x000000}
+  roughness={roughness} // 윤기
+  metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
+  // MatrStandard 와 다르게 이게 들어감
+  flatShading={false}
+  wireframe={false}
+  clearcoat={clearcoat} // 표면에 코팅이 전혀 안되어 있는 재질 0
+  clearcoatRoughness={clearcoatRoughness} // 코팅에 대한 거칠기 값. = 매트느낌 0
+  // 유리효과
+  // roughness 0, metalness 0, clearcoat 0, clearcoatRoughness 0, transmission 1, thickness 0, ior 2.333
+  transmission={transmission} // 투명도 (0 투명하지 않음, 1 완전 투명)
+  thickness={thickness} // 유리의 두께
+  ior={ior} // 굴절률 (1 굴절이 없음, 1.5 유리, 2 다이아몬드)
+/>`
+
 - MeshDepthMaterial = 음영으로 깊이를 표현 재질
 - MeshMatcapMaterial = matcap 이미지 파일을 그대로 입히는 재질. (이미지 파일은 이미 조을 포함하여, 광원이 필요없음)
 - MeshNormalMaterial = 법선 벡터의 xyz 값을 rgb값으로 표한한 재질 (xyz 각각 색 입힘) 백터를 RGB 색상으로 매핑하는 재질
@@ -308,7 +383,7 @@ const texture = useTexture({
 
 ## 카메라(Camera)
 
-![alt text](./public/img/카메라jpg)
+![alt text](./public/img/카메라.jpg)
 
 1. Perspective Camera (원근감을 제공하는 카메라) [ 기본 카메라 ]
 2. Orthographic Camera (원근감이 없는 카메라) [ 멀리있어도 같은 크기면 같게보임 ]
@@ -320,6 +395,76 @@ const texture = useTexture({
 - 절두체에 포함된 부분만 렌더링됨. 결론은 카메라를 정의한다는건 절두체를 정의한다는 말과 같음.
 
 ![alt text](./public/img/카메라_파라메터.jpg)
+
+```jsx
+// 1. Perspective Camera
+<Canvas
+  camera={{
+    fov: 75, // 카메라의 화각 75deg (0~180 화각이 클수록 장면이 작게 렌더링됨.)
+    near: 1. // 절두체 설정 [최대 가까이 있는 값] => 절두체 영역을 벗어나면 잘림
+    far:20,// 절두체 설정 [최대 멀리 있는 값] => 절두체 영역을 벗어나면 잘림
+    position: [7, 7, 0], // 카메라 위치 중앙 기준으로 0 0 0
+  }}
+></Canvas>
+
+// 2. Orthographic Camera
+  <Canvas
+    orthographic
+    camera={{
+      near: 0.1,
+      far: 20,
+      zoom: 100,
+      position: [0, 7, 7],
+    }}
+  >
+  </Canvas>
+```
+
+## 그림자 (Shadow)
+
+![alt text](./public/img/shadow.jpg)
+
+- 그림자를 지원하는 광원
+  1. DirectionalLight
+  2. PointLight
+  3. SpotLight
+- Drei에서 제공하는 그림자 컴포넌트
+  1. AccumulativeShadow
+  2. ContactShadows
+  3. SoftShadows
+
+1. Canvas 에 shadow 추가
+2. mesh 자체에 추가
+   castShadow = 자신에 대한 그림자 생성
+   receiveShadow = 그림자 수신 (다른 물체나 자신에 의해 생기는 그림자)
+
+![alt text](./public/img/그림자_알고리즘.jpg)
+그림자에 블러넣기
+
+1. Canvas에 shadows="variance" 추가 => 그림자에 노이즈 발생
+2. 광원에 shadow-bias={-0.0001} 추가. => 그림자 이미지를 메시의 표면에 맵핑시킬때의 gap.
+3. 광원에 shadow-radius, shadow-blurSamples 입맛대로 넣기
+
+```
+      <Canvas
+        // shadows // 그림자 추가
+        shadows="variance" // 그림자 추가
+        ..>
+        </Canvas>
+
+      <spotLight
+        ref={light}
+        shadow-mapSize={[1024, 1024]}
+        shadow-radius={8} // 블루링 효과를 적용하여 부드러운 그림자를 만듬
+        shadow-blurSamples={16} // 블루링 효과를 몇번 적용할지 (스머지, 문대는 효과)
+        shadow-bias={-0.0001} // 그림자 이미지 사이에 gap 줄이기
+        castShadow
+        color={0xffffff}
+        intensity={100}
+        position={[0, 5, 0]}
+        angle={THREE.MathUtils.degToRad(60)}
+      />
+```
 
 ### R3F
 
