@@ -341,9 +341,15 @@ function App() {
         <MyElement3DShadow />
       </Canvas>
 
+      // drei 그림자 컴포넌트
+      <Canvas camera={{ position: [7, 7, 0], fov: 60 }}>
+        <MyElement3DShadow />
+      </Canvas>
+
       <Canvas>
         <MyElement3D />
       </Canvas>
+      
       
       <Canvas>
         <pointLight position={[10, 10, 10]} />
