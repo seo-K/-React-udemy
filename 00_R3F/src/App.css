@@ -228,6 +228,7 @@ button.active {
 .reset-button {
   width: 50%;
   font-size: 1rem;
+  line-height: 1;
   padding: 0.5rem;
   border-radius: 5px;
   font-weight: bold;
@@ -237,4 +238,29 @@ button.active {
   outline: none;
   border: none;
   margin-bottom: 1rem;
+}
+.models {
+}
+.checkbox-button label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: rgb(229, 231, 235);
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.checkbox-button label:after {
+  flex-shrink: 0;
+  content: "";
+  background: url(./public/img/icon_unchecked.svg) no-repeat center center / contain;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.checkbox-button label + input[type="checkbox"] {
+  display: none;
+}
+.checkbox-button label:has(+ input[type="checkbox"]:checked):after {
+  background-image: url(./public/img/icon_checked.svg);
 }

@@ -5,6 +5,8 @@ import MyElement3DCamera from "./MyElement3D_camera";
 import GeometryContent from "./GeometryContent";
 import { useState } from "react";
 import LightContent from "./LightContent";
+import ModelsContent from "./ModelsContent";
+import PostprocessingContent from "./PostprocessingContent";
 
 function App() {
   const GeometryList = [
@@ -40,13 +42,32 @@ function App() {
   ];
 
   const dreiMeshList = ["MeshReflectorMaterial", "MeshRefractionMaterial", "MeshTransmissionMaterial", "MeshWobbleMaterial", "MeshDistortMaterial", "shaderMaterial"];
-  const LightList = ["LightAmbientLight", "LightDirectionalLight", "LightHemisphereLight", "LightSpotLight", "LightPointLight", "LightRectAreaLight", "LightEnvironment"];
+  const LightList = ["null", "LightAmbientLight", "LightDirectionalLight", "LightHemisphereLight", "LightSpotLight", "LightPointLight", "LightRectAreaLight", "LightEnvironment"];
 
   const [activeGeometryTab, setActiveGeometryTab] = useState(GeometryList[0]);
   const [activeMeshTab, setActiveMeshTab] = useState(MeshList[0]);
   const [activeDreiMeshTab, setActiveDreiMeshTab] = useState(dreiMeshList[0]);
   const [activeLightTab, setActiveLightTab] = useState(LightList[0]);
+  // const [modelChecked, setModelChecked] = useState(false);
+  // const [postprocessingChecked, setPostprocessingChecked] = useState(false);
 
+  // 각 체크박스의 체크 상태를 저장하는 객체
+  const [checkboxState, setCheckboxState] = useState({
+    modelChecked: false,
+    postprocessingChecked: false,
+  });
+
+  // 각 체크박스를 토글하는 함수
+  const ToggleCheckbox = (checkboxName) => {
+    // isChecked의 값을 반전시켜서 업데이트
+    setCheckboxState((prevCheckStates) => ({
+      ...prevCheckStates,
+      [checkboxName]: !prevCheckStates[checkboxName],
+    }));
+  };
+
+  console.log(checkboxState.modelChecked);
+  console.log(checkboxState.postprocessingChecked);
   // 각 탭의 열림/닫힘 상태를 저장하는 객체
   const [tabStates, setTabStates] = useState({
     geometryTabOpen: false,
@@ -63,11 +84,14 @@ function App() {
     }));
   };
 
+  // 초기화
   const resetAll = () => {
     setActiveGeometryTab(GeometryList[0]);
     setActiveMeshTab(MeshList[0]);
     setActiveDreiMeshTab(dreiMeshList[0]);
     setActiveLightTab(LightList[0]);
+    // setModelChecked(false);
+    // setPostprocessingChecked(false);
   };
 
   function Content() {
@@ -88,6 +112,44 @@ function App() {
           className="light-canvas"
         >
           <LightContent selectedLight={activeLightTab} />
+        </Canvas>
+      );
+    } else if (activeLightTab !== LightList[0]) {
+      return (
+        // 빛, 광원
+        <Canvas
+          camera={{
+            fov: 75,
+            position: [7, 7, 0],
+          }}
+          className="light-canvas"
+        >
+          <LightContent selectedLight={activeLightTab} />
+        </Canvas>
+      );
+    } else if (checkboxState.modelChecked === true) {
+      return (
+        // 빛, 광원
+        <Canvas
+          camera={{
+            near: 1,
+            fov: 100,
+            position: [7, 7, 0],
+          }}
+        >
+          <ModelsContent />
+        </Canvas>
+      );
+    } else if (checkboxState.postprocessingChecked === true) {
+      return (
+        // 빛, 광원
+        <Canvas
+          shadows
+          camera={{
+            position: [7, 7, 0],
+          }}
+        >
+          <PostprocessingContent />
         </Canvas>
       );
     } else {
@@ -180,6 +242,23 @@ function App() {
               })}
             </nav>
           )}
+        </li>
+        <li>
+          <h2 className="checkbox-button">
+            <label htmlFor="models">모델 / 애니메이션</label>
+            <input
+              id="models"
+              type="checkbox"
+              checked={checkboxState.modelChecked} // 체크 여부는 isChecked 변수에 의해 제어됨
+              onChange={() => ToggleCheckbox("modelChecked")} // 체크박스 상태 변경 시 호출되는 함수
+            />
+          </h2>
+        </li>
+        <li>
+          <h2 className="checkbox-button">
+            <label htmlFor="postprocessing">후처리</label>
+            <input id="postprocessing" type="checkbox" checked={checkboxState.postprocessingChecked} onChange={() => ToggleCheckbox("postprocessingChecked")} />
+          </h2>
         </li>
       </ul>
       {/* 카메라로부터 거리가 3.5인 픽셀은 그 값을 0으로 할당하고, 카메라로부터 거리가 6인치점은 2를 할당받아서 만들어진 재질 */}

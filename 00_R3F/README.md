@@ -178,30 +178,31 @@
 
   - MeshPhysicalMaterial = 반사성을 더 조절할 수 있는 MeshStandardMaterial의 확장 ( 유리같은 표현 가능 )
 
-    `<meshPhysicalMaterial
-  visible={true}
-  transparent={true} // 유리효과는 투명 효과를 켜줘야함
-  opacity={1}
-  depthTest={true}
-  depthWrite={true}
-  // side={THREE.FrontSide}
-  side={THREE.DoubleSide}
-  color={meshColor}
-  emissive="blue"
-  // emissive={0x000000}
-  roughness={roughness} // 윤기
-  metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
-  // MatrStandard 와 다르게 이게 들어감
-  flatShading={false}
-  wireframe={false}
-  clearcoat={clearcoat} // 표면에 코팅이 전혀 안되어 있는 재질 0
-  clearcoatRoughness={clearcoatRoughness} // 코팅에 대한 거칠기 값. = 매트느낌 0
-  // 유리효과
-  // roughness 0, metalness 0, clearcoat 0, clearcoatRoughness 0, transmission 1, thickness 0, ior 2.333
-  transmission={transmission} // 투명도 (0 투명하지 않음, 1 완전 투명)
-  thickness={thickness} // 유리의 두께
-  ior={ior} // 굴절률 (1 굴절이 없음, 1.5 유리, 2 다이아몬드)
-/>`
+        `<meshPhysicalMaterial
+
+    visible={true}
+    transparent={true} // 유리효과는 투명 효과를 켜줘야함
+    opacity={1}
+    depthTest={true}
+    depthWrite={true}
+    // side={THREE.FrontSide}
+    side={THREE.DoubleSide}
+    color={meshColor}
+    emissive="blue"
+    // emissive={0x000000}
+    roughness={roughness} // 윤기
+    metalness={metalness} // 금속성 (윤기와 금속성은 상관관계가 높다) 돌 ~ 금속
+    // MatrStandard 와 다르게 이게 들어감
+    flatShading={false}
+    wireframe={false}
+    clearcoat={clearcoat} // 표면에 코팅이 전혀 안되어 있는 재질 0
+    clearcoatRoughness={clearcoatRoughness} // 코팅에 대한 거칠기 값. = 매트느낌 0
+    // 유리효과
+    // roughness 0, metalness 0, clearcoat 0, clearcoatRoughness 0, transmission 1, thickness 0, ior 2.333
+    transmission={transmission} // 투명도 (0 투명하지 않음, 1 완전 투명)
+    thickness={thickness} // 유리의 두께
+    ior={ior} // 굴절률 (1 굴절이 없음, 1.5 유리, 2 다이아몬드)
+    />`
 
 - MeshDepthMaterial = 음영으로 깊이를 표현 재질
 - MeshMatcapMaterial = matcap 이미지 파일을 그대로 입히는 재질. (이미지 파일은 이미 조을 포함하여, 광원이 필요없음)
@@ -465,6 +466,27 @@ const texture = useTexture({
         angle={THREE.MathUtils.degToRad(60)}
       />
 ```
+
+## 3D모델 / 애니메이션
+
+![alt text](./public/img/지원확장자.jpg)
+
+- 자주 사용되는 확장자
+  1. 3DS
+  2. FBS
+  3. GlTF (Khronos Group 에서 정의한 표준으로 효율성이 아주 뛰어난 형식)
+  4. OBJ
+
+> https://www.mixamo.com/
+> 해당 이미지를 블랜더로 행동들을 포맷해서 올림. 그래서 actionName 값을 받아 해당 액션을 입힘.
+
+## Postprocessing (후처리)
+
+> https://docs.pmnd.rs/react-postprocessing/effect-composer
+
+라이브러리 설치
+
+> npm i @react-three/postprocessing
 
 ### R3F
 
