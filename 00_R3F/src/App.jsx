@@ -60,13 +60,13 @@ function App() {
     "LightEnvironment",
   ];
 
-  const PostprocessingList = ["null", "색상", "각도, 크기"];
+  const PostprocessingList = ["null", "색상", "각도/크기", "빛나는_효과"];
 
   const [activeGeometry, setActiveGeometry] = useState(GeometryList[0]);
   const [activeMesh, setActiveMesh] = useState(MeshList[0]);
   const [activeDreiMesh, setActiveDreiMesh] = useState(DreiMeshList[0]);
   const [activeLight, setActiveLight] = useState(LightList[0]);
-  const [postprocessing, setPostprocessing] = useState(false);
+  const [postprocessing, setPostprocessing] = useState(PostprocessingList[0]);
 
   // 각 체크박스의 체크 상태를 저장하는 객체
   const [checkboxState, setCheckboxState] = useState({
@@ -83,8 +83,6 @@ function App() {
     }));
   };
 
-  console.log(checkboxState.modelChecked);
-  console.log(checkboxState.postprocessingChecked);
   // 각 탭의 열림/닫힘 상태를 저장하는 객체
   const [tabStates, setTabStates] = useState({
     geometryTabOpen: false,
@@ -109,7 +107,7 @@ function App() {
     setActiveDreiMesh(DreiMeshList[0]);
     setActiveLight(LightList[0]);
     setPostprocessing(PostprocessingList[0]);
-    // setModelChecked(false);
+    setCheckboxState({ ...checkboxState, modelChecked: false }); // checkboxState.modelChecked = false; 직접값을 할당하면안되고, 훅으로 생성된 상태를 업데이트 해야함.
   };
 
   function Content() {
@@ -121,7 +119,6 @@ function App() {
       );
     } else if (activeLight !== LightList[0]) {
       return (
-        // 빛, 광원
         <Canvas
           camera={{
             fov: 75,
@@ -134,7 +131,6 @@ function App() {
       );
     } else if (checkboxState.modelChecked === true) {
       return (
-        // 빛, 광원
         <Canvas
           camera={{
             near: 1,
@@ -145,9 +141,8 @@ function App() {
           <ModelsContent />
         </Canvas>
       );
-    } else if (postprocessing !== null) {
+    } else if (postprocessing !== PostprocessingList[0]) {
       return (
-        // 빛, 광원
         <Canvas
           shadows
           camera={{
@@ -297,8 +292,8 @@ function App() {
                   <button
                     type="button"
                     key={item + "_tab"}
-                    onClick={() => setActiveDreiMesh(item)}
-                    className={activeDreiMesh === item ? "active" : undefined}
+                    onClick={() => setPostprocessing(item)}
+                    className={postprocessing === item ? "active" : undefined}
                     value={item}
                   >
                     {item}

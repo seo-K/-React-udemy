@@ -133,7 +133,7 @@ function GeometryContent({ selectedGeometry, selectedMesh, selectedDreiMesh }) {
   const Mesh = lowerCaseFirstText(selectedMesh);
   const dreiMesh = lowerCaseFirstText(selectedDreiMesh);
 
-  console.log(dreiMesh);
+  // console.log(dreiMesh);
   const globalGeometry = new THREE[selectedGeometry](); // const globalGeometry = new THREE.BoxGeometry();
   const globalMaterial = new THREE[selectedMesh](); // const globalMaterial = new THREE.MeshBasicMaterial();
 
@@ -163,7 +163,9 @@ function GeometryContent({ selectedGeometry, selectedMesh, selectedDreiMesh }) {
 
       {/* 1. 기본 */}
       <mesh position={[-2, 0, 0]}>
-        {GeometryComponents.map((item, index) => (Geometry === item.geometry ? React.cloneElement(item.component, { key: item.geometry + "_geom_content" }) : null))}
+        {GeometryComponents.map((item, index) =>
+          Geometry === item.geometry ? React.cloneElement(item.component, { key: item.geometry + "_geom_content" }) : null
+        )}
         {MeshComponents.map((item, index) => (Mesh === item.mesh ? React.cloneElement(item.component, { key: item.mesh + "_mesh_content" }) : null))}
       </mesh>
 

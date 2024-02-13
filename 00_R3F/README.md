@@ -488,6 +488,10 @@ const texture = useTexture({
 
 > npm i @react-three/postprocessing
 
+1. HueSaturation, BrightnessContrast (채도 및 색상 조정)
+2. DotScreen(도트 스크린)
+3. Bloom (빛나는 효과 = 한 객체를 빛나게하는데 효과적임)
+
 ### R3F
 
 R3F
