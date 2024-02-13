@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
 import { useFrame } from "@react-three/fiber";
-import { EffectComposer } from "@react-three/postprocessing";
+import { BrightnessContrast, EffectComposer, HueSaturation } from "@react-three/postprocessing";
 
 // 도넛 셋팅
 const torusGeometry = new THREE.TorusGeometry(0.4, 0.1, 32, 32);
@@ -40,16 +40,32 @@ function PostprocessingContent() {
     },
   });
 
+  const { brightness, contrast } = useControls({
+    brightness: {
+      value: 0,
+      min: -1,
+      max: 1,
+      step: 0.1,
+    },
+    contrast: {
+      value: 0,
+      min: -1,
+      max: 1,
+      step: 0.1,
+    },
+  });
+
   return (
     <>
       <OrbitControls />
 
       <EffectComposer
         disableNormalPass // 효과 해제
-        enabled={enabled}
-        hue={hue}
-        saturation={saturation}
-      />
+        enabled={enabled} // 후처리 적용 여부
+      >
+        <HueSaturation hue={hue} saturation={saturation} /> // 색조와 채도를 변경
+        <BrightnessContrast brightness={brightness} contrast={contrast} />
+      </EffectComposer>
 
       <ambientLight intensity={0.1} />
       {/* 1. DirectionalLight */}
