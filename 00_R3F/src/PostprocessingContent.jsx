@@ -14,7 +14,7 @@ const torusMaterial = new THREE.MeshStandardMaterial({
   metalness: 0.9,
 });
 
-function PostprocessingContent() {
+function PostprocessingContent({ selectedPostprocessing }) {
   useFrame((state) => {
     const time = state.clock.elapsedTime;
     const smallSpherePivot = state.scene.getObjectByName("smallSpherePivot");

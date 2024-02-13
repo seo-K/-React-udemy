@@ -41,20 +41,37 @@ function App() {
     "MeshToonMaterial",
   ];
 
-  const dreiMeshList = ["MeshReflectorMaterial", "MeshRefractionMaterial", "MeshTransmissionMaterial", "MeshWobbleMaterial", "MeshDistortMaterial", "shaderMaterial"];
-  const LightList = ["null", "LightAmbientLight", "LightDirectionalLight", "LightHemisphereLight", "LightSpotLight", "LightPointLight", "LightRectAreaLight", "LightEnvironment"];
+  const DreiMeshList = [
+    "MeshReflectorMaterial",
+    "MeshRefractionMaterial",
+    "MeshTransmissionMaterial",
+    "MeshWobbleMaterial",
+    "MeshDistortMaterial",
+    "shaderMaterial",
+  ];
+  const LightList = [
+    "null",
+    "LightAmbientLight",
+    "LightDirectionalLight",
+    "LightHemisphereLight",
+    "LightSpotLight",
+    "LightPointLight",
+    "LightRectAreaLight",
+    "LightEnvironment",
+  ];
 
-  const [activeGeometryTab, setActiveGeometryTab] = useState(GeometryList[0]);
-  const [activeMeshTab, setActiveMeshTab] = useState(MeshList[0]);
-  const [activeDreiMeshTab, setActiveDreiMeshTab] = useState(dreiMeshList[0]);
-  const [activeLightTab, setActiveLightTab] = useState(LightList[0]);
-  // const [modelChecked, setModelChecked] = useState(false);
-  // const [postprocessingChecked, setPostprocessingChecked] = useState(false);
+  const PostprocessingList = ["null", "색상", "각도, 크기"];
+
+  const [activeGeometry, setActiveGeometry] = useState(GeometryList[0]);
+  const [activeMesh, setActiveMesh] = useState(MeshList[0]);
+  const [activeDreiMesh, setActiveDreiMesh] = useState(DreiMeshList[0]);
+  const [activeLight, setActiveLight] = useState(LightList[0]);
+  const [postprocessing, setPostprocessing] = useState(false);
 
   // 각 체크박스의 체크 상태를 저장하는 객체
   const [checkboxState, setCheckboxState] = useState({
     modelChecked: false,
-    postprocessingChecked: false,
+    // postprocessingChecked: false,
   });
 
   // 각 체크박스를 토글하는 함수
@@ -74,6 +91,7 @@ function App() {
     meshTabOpen: false,
     dreiMeshTabOpen: false,
     lightTabOpen: false,
+    postprocessingTabOpen: false,
   });
 
   // 각 탭을 토글하는 함수
@@ -86,22 +104,22 @@ function App() {
 
   // 초기화
   const resetAll = () => {
-    setActiveGeometryTab(GeometryList[0]);
-    setActiveMeshTab(MeshList[0]);
-    setActiveDreiMeshTab(dreiMeshList[0]);
-    setActiveLightTab(LightList[0]);
+    setActiveGeometry(GeometryList[0]);
+    setActiveMesh(MeshList[0]);
+    setActiveDreiMesh(DreiMeshList[0]);
+    setActiveLight(LightList[0]);
+    setPostprocessing(PostprocessingList[0]);
     // setModelChecked(false);
-    // setPostprocessingChecked(false);
   };
 
   function Content() {
-    if (activeMeshTab == "MeshDepthMaterial") {
+    if (activeMesh == "MeshDepthMaterial") {
       return (
         <Canvas camera={{ near: 3.5, far: 6 }}>
-          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
+          <GeometryContent selectedGeometry={activeGeometry} selectedMesh={activeMesh} selectedDreiMesh={activeDreiMesh} />
         </Canvas>
       );
-    } else if (activeLightTab !== LightList[0]) {
+    } else if (activeLight !== LightList[0]) {
       return (
         // 빛, 광원
         <Canvas
@@ -111,20 +129,7 @@ function App() {
           }}
           className="light-canvas"
         >
-          <LightContent selectedLight={activeLightTab} />
-        </Canvas>
-      );
-    } else if (activeLightTab !== LightList[0]) {
-      return (
-        // 빛, 광원
-        <Canvas
-          camera={{
-            fov: 75,
-            position: [7, 7, 0],
-          }}
-          className="light-canvas"
-        >
-          <LightContent selectedLight={activeLightTab} />
+          <LightContent selectedLight={activeLight} />
         </Canvas>
       );
     } else if (checkboxState.modelChecked === true) {
@@ -140,7 +145,7 @@ function App() {
           <ModelsContent />
         </Canvas>
       );
-    } else if (checkboxState.postprocessingChecked === true) {
+    } else if (postprocessing !== null) {
       return (
         // 빛, 광원
         <Canvas
@@ -149,13 +154,13 @@ function App() {
             position: [7, 7, 0],
           }}
         >
-          <PostprocessingContent />
+          <PostprocessingContent selectedPostprocessing={postprocessing} />
         </Canvas>
       );
     } else {
       return (
         <Canvas>
-          <GeometryContent selectedGeometry={activeGeometryTab} selectedMesh={activeMeshTab} selectedDreiMesh={activeDreiMeshTab} />
+          <GeometryContent selectedGeometry={activeGeometry} selectedMesh={activeMesh} selectedDreiMesh={activeDreiMesh} />
         </Canvas>
       );
     }
@@ -181,7 +186,7 @@ function App() {
             <nav className="tab">
               {GeometryList.map((item) => {
                 return (
-                  <button type="button" key={item + "_tab"} onClick={() => setActiveGeometryTab(item)} className={activeGeometryTab === item ? "active" : undefined}>
+                  <button type="button" key={item + "_tab"} onClick={() => setActiveGeometry(item)} className={activeGeometry === item ? "active" : undefined}>
                     {item}
                   </button>
                 );
@@ -199,7 +204,13 @@ function App() {
             <nav className="tab">
               {MeshList.map((item) => {
                 return (
-                  <button type="button" key={item + "_tab"} onClick={() => setActiveMeshTab(item)} className={activeMeshTab === item ? "active" : undefined} value={item}>
+                  <button
+                    type="button"
+                    key={item + "_tab"}
+                    onClick={() => setActiveMesh(item)}
+                    className={activeMesh === item ? "active" : undefined}
+                    value={item}
+                  >
                     {item}
                   </button>
                 );
@@ -215,9 +226,15 @@ function App() {
           </h2>
           {tabStates.dreiMeshTabOpen && (
             <nav className="tab">
-              {dreiMeshList.map((item) => {
+              {DreiMeshList.map((item) => {
                 return (
-                  <button type="button" key={item + "_tab"} onClick={() => setActiveDreiMeshTab(item)} className={activeDreiMeshTab === item ? "active" : undefined} value={item}>
+                  <button
+                    type="button"
+                    key={item + "_tab"}
+                    onClick={() => setActiveDreiMesh(item)}
+                    className={activeDreiMesh === item ? "active" : undefined}
+                    value={item}
+                  >
                     {item}
                   </button>
                 );
@@ -225,6 +242,7 @@ function App() {
             </nav>
           )}
         </li>
+
         <li>
           <h2 className={tabStates.lightTabOpen ? "tab-title open" : "tab-title"}>
             <button type="button" onClick={() => toggleTab("lightTabOpen")}>
@@ -235,7 +253,13 @@ function App() {
             <nav className="tab">
               {LightList.map((item) => {
                 return (
-                  <button type="button" key={item + "_tab"} onClick={() => setActiveLightTab(item)} className={activeLightTab === item ? "active" : undefined} value={item}>
+                  <button
+                    type="button"
+                    key={item + "_tab"}
+                    onClick={() => setActiveLight(item)}
+                    className={activeLight === item ? "active" : undefined}
+                    value={item}
+                  >
                     {item}
                   </button>
                 );
@@ -254,11 +278,35 @@ function App() {
             />
           </h2>
         </li>
-        <li>
+        {/* <li>
           <h2 className="checkbox-button">
             <label htmlFor="postprocessing">후처리</label>
             <input id="postprocessing" type="checkbox" checked={checkboxState.postprocessingChecked} onChange={() => ToggleCheckbox("postprocessingChecked")} />
           </h2>
+        </li> */}
+        <li>
+          <h2 className={tabStates.postprocessingTabOpen ? "tab-title open" : "tab-title"}>
+            <button type="button" onClick={() => toggleTab("postprocessingTabOpen")}>
+              후처리
+            </button>
+          </h2>
+          {tabStates.postprocessingTabOpen && (
+            <nav className="tab">
+              {PostprocessingList.map((item) => {
+                return (
+                  <button
+                    type="button"
+                    key={item + "_tab"}
+                    onClick={() => setActiveDreiMesh(item)}
+                    className={activeDreiMesh === item ? "active" : undefined}
+                    value={item}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </nav>
+          )}
         </li>
       </ul>
       {/* 카메라로부터 거리가 3.5인 픽셀은 그 값을 0으로 할당하고, 카메라로부터 거리가 6인치점은 2를 할당받아서 만들어진 재질 */}
