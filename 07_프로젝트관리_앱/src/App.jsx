@@ -10,6 +10,7 @@ function App() {
     projects: [],
   });
 
+  // 프로젝트 리스트 선언
   function handleStartAddProject() {
     setProjectStatus((prevState) => {
       return {
@@ -19,16 +20,50 @@ function App() {
     });
   }
 
+  // 새로운 프로젝트 생성 취소
+  function handleCancelAddProject() {
+    setProjectStatus((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined, // null 새로운 프로젝트 추가
+      };
+    });
+  }
+
+  // 새로운 프로젝트 추가
+  function handleAddProject(projectData) {
+    setProjectStatus((prevState) => {
+      // 새로운 프로젝트 데이터
+      const projectId = Math.random();
+      const newProject = {
+        ...projectData,
+        id: projectId,
+      };
+      return {
+        ...prevState,
+        selectedProjectId: undefined, // null에서 전환하여, 프로젝트 화면 분기처리
+        projects: [...prevState.projects, newProject],
+      };
+    });
+  }
+  // console.log(projectStatus);
+
   let content;
- // 프로젝트가 있는지 없는지 확인
+  // 프로젝트가 있는지 없는지 확인
   if (projectStatus.selectedProjectId === null) {
-    content = <NewProject />;
+    content = (
+      <NewProject onAdd={handleAddProject} onCancle={handleCancelAddProject} />
+    );
   } else if (projectStatus.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
+
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSideBar onStartAddProject={handleStartAddProject} />
+      <ProjectsSideBar
+        onStartAddProject={handleStartAddProject}
+        projects={projectStatus.projects}
+      />
       {content}
     </main>
   );

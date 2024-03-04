@@ -26,11 +26,32 @@
 
 - 이 컴포넌트에 렌더링이될 HTML을 DOM 내의 다른곳으로 옮기는 것.
 - 기본 index.html 에 createPortal이 들어갈 html을 생성.
-  ex) 모달 등 컴포넌트 내 말고 다른 위치에 위치하고 싶은 컨텐츠를 html로 지정한 위치로 랜더링 시키는 기능.
+  ex) 모달 등 컴포넌트 내. 말고 다른 위치에 위치하고 싶은 컨텐츠를 html로 지정한 위치로 랜더링 시키는 기능.
+
+  - 사용법
+
+  1. createPortal 가져오기
 
   ```jsx
-  return createPortal(jsx코드, HTML요소);
+  import { createPortal } from "react-dom";
   ```
 
-<img src="./src/assets/basic.png" width="400" height="300" alt="portal 적용 전"/>
-<img src="./src/assets/portal.png" width="400" height="300"alt="portal 적용 후"/>
+  2. createPortal 로 해당 컴포넌트 감싸기
+
+  ```jsx
+  export default function Modal({ children }) {
+    return createPortal(<dialog>{children}</dialog>); //   return createPortal(jsx코드, HTML요소);
+  }
+  ```
+
+  3. 위치시킬 위치 선정
+
+  ```jsx
+  return createPortal(
+    <dialog>{children}</dialog>,
+    document.getElementById("modal-root") // #modal-root 에 해당 모달 설치
+  );
+  ```
+
+  <img src="./src/assets/basic.png" width="400" height="300" alt="portal 적용 전"/>
+  <img src="./src/assets/portal.png" width="400" height="300"alt="portal 적용 후"/>
