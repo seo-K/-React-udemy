@@ -10,7 +10,7 @@ export default function ProjectsSideBar({ onStartAddProject, onSelecteProject, p
       <ul className="mt-8">
         {projects.map((item, index) => {
           let cssClasses = "w-full text-left px-2 py-1 rounded-sm my-1 hover:text-stone-200 hover:bg-stone-800";
-          if (projects.id == selectedProjectId) {
+          if (item.id == selectedProjectId) {
             // tailwind 개 좋네?
             cssClasses += " bg-stone-800 text-stone-200";
             console.log(item.id, "얍");
