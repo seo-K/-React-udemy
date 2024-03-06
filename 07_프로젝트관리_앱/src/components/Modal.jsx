@@ -13,20 +13,18 @@ const Modal = forwardRef(function Modal({ children, buttonCaption }, ref) {
   });
 
   return createPortal(
-    <dialog
-      ref={dialog}
-      className="backdrop:bg-stone-900/90 p-4 rounded-md shadow-md"
-    >
+    <dialog ref={dialog} className="backdrop:bg-stone-900/90 p-4 rounded-md shadow-md">
       {children}
 
       {buttonCaption && (
         <form methode="dialog" className="mt-4 text-right">
-          <Button type="button">{buttonCaption}</Button>
+          <Button type="button" aria-label="close" onClick={() => dialog.current.close()}>
+            {buttonCaption}
+          </Button>
         </form>
       )}
     </dialog>,
     document.getElementById("modal-root") // #modal-root 에 해당 모달 설치
   );
 });
-
 export default Modal;

@@ -34,6 +34,7 @@ export default function NewProject({ onAdd, onCancle }) {
     if (newAlertText !== "") {
       setAlertText(newAlertText);
       modal.current.open();
+
       return;
     }
 
@@ -43,6 +44,26 @@ export default function NewProject({ onAdd, onCancle }) {
       description: enteredDesc,
       date: enteredDate,
     });
+
+    // App 컴포넌트에 있는
+    // 새로운 프로젝트 추가
+    // function handleAddProject(여기안에들어가는거다) {
+    //   setProjectStatus((prevState) => {
+    //     const projectId = Math.random();
+
+    //     // 새로운 프로젝트 데이터
+    //     const newProject = {
+    //       ...여기안에들어가는거다,
+    //       id: projectId,
+    //     };
+
+    //     return {
+    //       ...prevState,
+    //       selectedProjectId: undefined, // null에서 전환하여, 프로젝트 화면 분기처리
+    //       projects: [...prevState.projects, newProject],
+    //     };
+    //   });
+    // }
   }
 
   return (
@@ -55,38 +76,19 @@ export default function NewProject({ onAdd, onCancle }) {
       <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">
           <li>
-            <button
-              className="text-stone-800 hover:text-stone-950"
-              type="button"
-            >
+            <button className="text-stone-800 hover:text-stone-950" type="button" onClick={onCancle}>
               취소
             </button>
           </li>
           <li>
-            <button
-              className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
-              type="button"
-              onClick={handleSave}
-            >
+            <button className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950" type="button" onClick={handleSave}>
               저장
             </button>
           </li>
         </menu>
         <div>
-          <Input
-            ref={title}
-            label="제목"
-            type="text"
-            placeholder="제목을 입력해주세요"
-            required
-          />
-          <Input
-            ref={description}
-            label="설명"
-            isTextarea
-            placeholder="설명을 입력해주세요"
-            required
-          />
+          <Input ref={title} label="제목" type="text" placeholder="제목을 입력해주세요" required />
+          <Input ref={description} label="설명" isTextarea placeholder="설명을 입력해주세요" required />
           <Input ref={dueDate} label="마감기한" type="date" />
         </div>
       </div>
