@@ -26,7 +26,7 @@ function App() {
     });
   }
 
-  // 프로젝트 리스트 선언
+  // 프로젝트 생성 시작
   function handleStartAddProject() {
     setProjectStatus((prevState) => {
       return {
@@ -36,17 +36,17 @@ function App() {
     });
   }
 
-  // 새로운 프로젝트 생성 취소
+  // 프로젝트 생성 취소
   function handleCancelAddProject() {
     setProjectStatus((prevState) => {
       return {
         ...prevState,
-        selectedProjectId: undefined, // null 새로운 프로젝트 추가
+        selectedProjectId: undefined,
       };
     });
   }
 
-  // 새로운 프로젝트 추가
+  // 프로젝트 추가
   function handleAddProject(projectData) {
     setProjectStatus((prevState) => {
       const projectId = Math.random();
@@ -64,13 +64,26 @@ function App() {
     });
   }
 
+  // 프로젝트 삭제
+  function handleDeleteProject() {
+    setProjectStatus((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: prevState.projects.filter((project) => project.id !== projectStatus.selectedProjectId),
+      };
+    });
+    console.log("delete project");
+  }
+
+  // 컨텐츠 영역
   const selectedProject = projectStatus.projects.find((project) => project.id === projectStatus.selectedProjectId);
 
-  let content = <SelectedProject project={selectedProject} />; // 기본은 선택된 프로젝트 뷰
+  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />; // 기본은 선택된 프로젝트 뷰
 
   // 프로젝트가 있는지 없는지 확인
   if (projectStatus.selectedProjectId === null) {
-    content = <NewProject onAdd={handleAddProject} onCancle={handleCancelAddProject} />;
+    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />;
   } else if (projectStatus.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
@@ -79,7 +92,7 @@ function App() {
       <ProjectsSideBar
         onStartAddProject={handleStartAddProject}
         projects={projectStatus.projects}
-        onSelecteProject={handleSelectProject}
+        onSelectedProject={handleSelectProject}
         selectedProjectId={projectStatus.selectedProjectId}
       />
       {content}

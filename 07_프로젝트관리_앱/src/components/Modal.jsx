@@ -17,7 +17,7 @@ const Modal = forwardRef(function Modal({ children, buttonCaption }, ref) {
       {children}
 
       {buttonCaption && (
-        <form methode="dialog" className="mt-4 text-right">
+        <form method="dialog" className="mt-4 text-right">
           <Button type="button" aria-label="close" onClick={() => dialog.current.close()}>
             {buttonCaption}
           </Button>
