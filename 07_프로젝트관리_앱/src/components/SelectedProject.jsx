@@ -1,6 +1,6 @@
 import Tasks from "./Tasks";
 
-export default function SelectedProject({ project, onDelete }) {
+export default function SelectedProject({ project, onDelete, onAddTask, onDeleteTask, tasks }) {
   const formattedDate = new Date(project.date).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "short",
@@ -18,7 +18,7 @@ export default function SelectedProject({ project, onDelete }) {
         <p className="mb-4 text-stone-400">날짜 : {formattedDate}</p>
         <p className="text-stone-600 whitespace-pre-wrap">설명 : {project.description}</p>
       </header>
-      <Tasks tasks={project?.tasks} />
+      <Tasks tasks={tasks} onAddTask={onAddTask} onDeleteTask={onDeleteTask} />
     </div>
   );
 }

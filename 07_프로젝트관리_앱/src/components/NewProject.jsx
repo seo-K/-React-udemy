@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
 
-export default function NewProject({ onAdd, onCancle }) {
+export default function NewProject({ onAdd, onCancel }) {
   const modal = useRef();
 
   // useState 는 값이 바뀔때마다 재랜더링을하는데, useRef는 그렇지않음.
@@ -76,7 +76,7 @@ export default function NewProject({ onAdd, onCancle }) {
       <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">
           <li>
-            <button className="text-stone-800 hover:text-stone-950" type="button" onClick={onCancle}>
+            <button className="text-stone-800 hover:text-stone-950" type="button" onClick={onCancel}>
               취소
             </button>
           </li>
@@ -87,9 +87,9 @@ export default function NewProject({ onAdd, onCancle }) {
           </li>
         </menu>
         <div>
-          <Input ref={title} label="제목" type="text" placeholder="제목을 입력해주세요" required />
-          <Input ref={description} label="설명" isTextarea placeholder="설명을 입력해주세요" required />
-          <Input ref={dueDate} label="마감기한" type="date" />
+          <Input ref={title} label="제목" type="text" placeholder="제목을 입력해주세요" required defaultValue="제목" />
+          <Input ref={description} label="설명" isTextarea placeholder="설명을 입력해주세요" required defaultValue="내용임" />
+          <Input ref={dueDate} label="마감기한" type="date" defaultValue="2012-02-03" />
         </div>
       </div>
     </>

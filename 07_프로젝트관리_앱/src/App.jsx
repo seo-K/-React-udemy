@@ -9,6 +9,7 @@ function App() {
   const [projectStatus, setProjectStatus] = useState({
     selectedProjectId: undefined, // undefined 아무것도 하지 않고 있음
     projects: [],
+    tasks: [],
     // date: "2024-03-12"
     // description: "2"
     // id: 0.8361237981022189
@@ -55,6 +56,7 @@ function App() {
         ...projectData,
         id: projectId,
       };
+      console.log(newProject);
 
       return {
         ...prevState,
@@ -76,10 +78,48 @@ function App() {
     console.log("delete project");
   }
 
+  // 할일 추가
+  // const [enterTask, setProjectStatus] = useState("");
+  function handleAddTask(text) {
+    setProjectStatus((prevState) => {
+      const taskId = Math.random();
+
+      const newTask = {
+        text: text,
+        projectId: prevState.selectedProjectId, // 선택된 애의 id값
+        id: taskId,
+      };
+
+      return {
+        ...prevState,
+        tasks: [newTask, ...prevState.tasks],
+      };
+    });
+  }
+
+  // 할일 삭제
+  function handleDeleteTask(targetId) {
+    setProjectStatus((prevState) => {
+      return {
+        ...prevState,
+        tasks: prevState.tasks.filter((task) => task.id !== targetId),
+      };
+    });
+  }
+
   // 컨텐츠 영역
   const selectedProject = projectStatus.projects.find((project) => project.id === projectStatus.selectedProjectId);
+  const selectedProjectTask = projectStatus.tasks.filter((task) => task.projectId === projectStatus.selectedProjectId);
 
-  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />; // 기본은 선택된 프로젝트 뷰
+  let content = (
+    <SelectedProject
+      project={selectedProject}
+      onDelete={handleDeleteProject}
+      onAddTask={handleAddTask}
+      onDeleteTask={handleDeleteTask}
+      tasks={selectedProjectTask}
+    />
+  ); // 기본은 선택된 프로젝트 뷰
 
   // 프로젝트가 있는지 없는지 확인
   if (projectStatus.selectedProjectId === null) {
