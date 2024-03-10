@@ -22,7 +22,7 @@ function App() {
     setProjectStatus((prevState) => {
       return {
         ...prevState,
-        selectedProjectId: id, // null 새로운 프로젝트 추가
+        selectedProjectId: id,
       };
     });
   }
