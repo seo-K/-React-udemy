@@ -12,7 +12,6 @@ export default function ProjectForm({ onAdd, onCancel }) {
   const [alertText, setAlertText] = useState("");
 
   let projectList = [];
-  let newAlertText;
 
   const handleSave = () => {
     const enteredTitle = title.current.value;
@@ -73,9 +72,9 @@ export default function ProjectForm({ onAdd, onCancel }) {
           </li>
         </menu>
         <div className="text-left">
-          <Input ref={title} label="제목" type="text" placeholder="제목" />
-          <Input ref={description} isText label="내용" placeholder="내용" />
-          <Input ref={dueDate} label="날짜" type="date" />
+          <Input ref={title} label="제목" type="text" placeholder="제목" defaultValue="TITLE" />
+          <Input ref={description} isText label="내용" placeholder="내용" defaultValue="DESC" />
+          <Input ref={dueDate} label="날짜" type="date" defaultValue="2022-02-02" />
         </div>
       </div>
     </>

@@ -8,6 +8,7 @@ function App() {
   const [projectState, setProjectState] = useState({
     selectedProjectId: undefined,
     projects: [],
+    tasks: [],
   });
 
   // 프로젝트 생성 시작
@@ -26,7 +27,7 @@ function App() {
 
       let newProject = { ...newProjectData, id: projectId };
 
-      console.log(projectState);
+      // console.log(projectState);
       return {
         ...prevState,
         selectedProjectId: undefined,
@@ -35,12 +36,12 @@ function App() {
     });
   };
 
-  // 프로젝트 추가 취소
+  // 프로젝트 생성 취소
   function handleCancelAddProject() {
     setProjectState((prevState) => {
       return {
         ...prevState,
-        selectedProjectId: undefined, // null 새로운 프로젝트 추가
+        selectedProjectId: undefined,
       };
     });
   }
@@ -55,34 +56,64 @@ function App() {
     });
   }
 
-  // setProjectStatus((prevState) => {
-  //   const projectId = Math.random();
+  // 프로젝트 삭제
+  function handleDeleteProject(id) {
+    setProjectState((prevState) => {
+      let newList = projectState.projects.filter((project) => project.id !== id);
+      return {
+        ...prevState,
+        selectedProjectId: undefined, // null 새로운 프로젝트 추가
+        projects: [...newList],
+        // projects: prevState.projects.filter((project) => project.id !== projectStatus.selectedProjectId),
+      };
+    });
+  }
 
-  //   const newProject = {
-  //     ...projectData,
-  //     id: projectId,
-  //   };
-  //   console.log(newProject);
+  // 할일 추가
+  function handleAddTask(newTaskData) {
+    setProjectState((prevState) => {
+      let taskId = Math.random();
+      let newTask = { ...newTaskData, taskId: taskId, id: projectState.selectedProjectId };
+      // const newTask = {
+      //   text: text,
+      //   projectId: prevState.selectedProjectId, // 선택된 애의 id값
+      //   id: taskId,
+      // };
+      console.log(newTask);
+      return {
+        ...prevState,
+        tasks: [newTask, ...prevState.tasks],
+      };
+    });
+  }
 
-  //   return {
-  //     ...prevState,
-  //     selectedProjectId: undefined, // null에서 전환하여, 프로젝트 화면 분기처리
-  //     projects: [...prevState.projects, newProject],
-  //   };
-  // });
+  // 할일 삭제
+  function handleDeleteTask(selectedId) {
+    setProjectState((prev) => {
+      let newList = projectState.tasks.filter((task) => task.taskId !== selectedId);
+      console.log(newList, selectedId);
+      return {
+        ...prev,
+        tasks: [...newList],
+        // tasks: prevState.tasks.filter((task) => task.id !== targetId),
+      };
+    });
+  }
+
   const selectedProject = projectState.projects.find((project) => project.id === projectState.selectedProjectId);
+  const selectedTask = projectState.tasks.filter((task) => task.id === projectState.selectedProjectId);
 
-  let content = <ProjectView project={selectedProject} />;
+  // console.log(selectedTask, projectState);
 
-  // content = <NoProject startProject={handleStartAddProject} />;
+  let content = (
+    <ProjectView project={selectedProject} onDelete={handleDeleteProject} onAddTask={handleAddTask} onDeleteTask={handleDeleteTask} tasks={selectedTask} />
+  );
 
   if (projectState.selectedProjectId === null) {
     content = <ProjectForm onAdd={handelAddProject} onCancel={handleCancelAddProject} />;
   } else if (projectState.selectedProjectId === undefined) {
     content = <NoProject startProject={handleStartAddProject} />;
   }
-
-  console.log(projectState.selectedProjectId);
 
   return (
     <div className="flex align-middle py-5 h-svh ">
@@ -95,7 +126,11 @@ function App() {
               return (
                 <li key={item.id}>
                   <button
-                    className="w-full px-4 py-2 text-xs md:text-base rounded-md bg-slate-600 text-white  hover:bg-slate-400 hover:text-stone-800 mb-2"
+                    className={
+                      item.id === projectState.selectedProjectId
+                        ? "w-full px-4 py-2 text-xs md:text-base rounded-md bg-slate-600 text-black  hover:bg-stone-400 hover:text-stone-600 mb-2"
+                        : "w-full px-4 py-2 text-xs md:text-base rounded-md bg-slate-600 text-white  hover:bg-slate-400 hover:text-stone-800 mb-2"
+                    }
                     onClick={() => {
                       handleSelectedProject(item.id);
                     }}
